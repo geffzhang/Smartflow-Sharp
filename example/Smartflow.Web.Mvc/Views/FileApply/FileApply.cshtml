@@ -1,4 +1,4 @@
-﻿@model Smartflow.BussinessService.Models.Apply
+﻿@model Smartflow.BussinessService.Models.FileApply
 @using Smartflow.BussinessService.Models
 @{
     Layout = null;
@@ -76,9 +76,10 @@
 
 
         function auditApply() {
-            var instanceID = document.getElementById("INSTANCEID").value;
-            var bussinessID = document.getElementById("IDENTIFICATION").value;
-            openWin('@Url.Action("WorkflowCheck", "UserControl")' + "?instanceID=" + instanceID + "&bussinessID=" + bussinessID, 600, 300);
+            var instanceID = document.getElementById("INSTANCEID").value,
+                bussinessID = document.getElementById("IDENTIFICATION").value,
+                bllServiceClass = document.getElementById("BLLSERVICE").value;
+            openWin('@Url.Action("WorkflowCheck", "UserControl")' + "?instanceID=" + instanceID + "&bussinessID=" + bussinessID + "&bllService=" + bllServiceClass, 600, 300);
         }
 
         function undoCheck() {
@@ -109,6 +110,7 @@
             @Html.HiddenFor(m => m.IDENTIFICATION)
             @Html.HiddenFor(m => m.INSTANCEID)
             @Html.HiddenFor(m => m.STATUS)
+            @Html.HiddenFor(m => m.BLLSERVICE)
             <table class="layui-table">
                 <tr>
                     <td style="width:100px;text-align:right;">文件名称</td>
@@ -159,7 +161,7 @@
             </table>
         </form>
         @{
-            if (Model != null)
+            if (Model != null && !String.IsNullOrEmpty(Model.INSTANCEID))
             {
                 Html.RenderAction("Record", "UserControl", new { instanceID = Model.INSTANCEID });
             }

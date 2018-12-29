@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Text;
 
@@ -10,8 +11,10 @@ namespace Smartflow.BussinessService
     {
         public static IDbConnection CreateConnection()
         {
-            string connectionString = ConfigurationManager.AppSettings["busConnection"];
-            IDbConnection connection = new SqlConnection(connectionString);
+            ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings["busConnection"];
+            IDbConnection connection = 
+                DbProviderFactories.GetFactory(connectionStringSettings.ProviderName).CreateConnection();
+            connection.ConnectionString = connectionStringSettings.ConnectionString;
             return connection;
         }
     }

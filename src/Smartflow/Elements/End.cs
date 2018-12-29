@@ -11,14 +11,18 @@ using System.Xml.Serialization;
 
 using Smartflow.Dapper;
 using Smartflow.Enums;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
 namespace Smartflow.Elements
 {
-    public class End :Node
+    public class End : Node
     {
+        [JsonProperty("name")]
         [XmlIgnore]
         public override string APPELLATION
         {
-            get{ return "结束";}
+            get { return "结束"; }
         }
 
         [XmlIgnore]
@@ -28,9 +32,10 @@ namespace Smartflow.Elements
             set;
         }
 
+        [JsonProperty("category", ItemConverterType = typeof(StringEnumConverter))]
         public override WorkflowNodeCategeory NodeType
         {
-            get{return WorkflowNodeCategeory.End;}
+            get { return WorkflowNodeCategeory.End; }
         }
     }
 }

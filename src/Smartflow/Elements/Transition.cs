@@ -11,31 +11,44 @@ using System.Xml.Serialization;
 
 using Smartflow.Dapper;
 using Smartflow.Enums;
+using Newtonsoft.Json;
 
 namespace Smartflow.Elements
 {
     [XmlInclude(typeof(Node))]
     public class Transition : Element, IRelationShip
     {
+        [JsonProperty("layout")]
+        [XmlAttribute("layout")]
+        public virtual string Layout
+        {
+            get;
+            set;
+        }
+
+        [JsonIgnore]
         public string RNID
         {
             get;
             set;
         }
 
-        public long ORIGIN
+        [JsonIgnore]
+        public string ORIGIN
         {
             get;
             set;
         }
 
+        [JsonProperty("destination")]
         [XmlAttribute("destination")]
-        public long DESTINATION
+        public string DESTINATION
         {
             get;
             set;
         }
 
+        [JsonProperty("expression")]
         [XmlAttribute("expression")]
         public string EXPRESSION
         {

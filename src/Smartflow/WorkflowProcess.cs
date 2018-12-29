@@ -36,7 +36,7 @@ namespace Smartflow
         /// <summary>
         /// 当前节点
         /// </summary>
-        public long ORIGIN
+        public string ORIGIN
         {
             get;
             set;
@@ -45,7 +45,7 @@ namespace Smartflow
         /// <summary>
         /// 跳转到的节点
         /// </summary>
-        public long DESTINATION
+        public string DESTINATION
         {
             get;
             set;

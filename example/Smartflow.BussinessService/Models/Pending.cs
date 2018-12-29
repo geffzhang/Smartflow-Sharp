@@ -1,19 +1,22 @@
-﻿using System;
+﻿using Dapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace Smartflow.BussinessService.Models
 {
+    [Table("T_PENDING")]
     public class Pending
     {
+        [Key]
         public long IDENTIFICATION
         {
             get;
             set;
         }
 
-        public long ACTORID
+        public string ACTORID
         {
             get;
             set;

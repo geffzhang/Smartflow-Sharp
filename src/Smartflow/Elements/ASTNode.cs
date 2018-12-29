@@ -12,12 +12,22 @@ using System.Data;
 
 using Smartflow.Dapper;
 using Smartflow.Enums;
+using Newtonsoft.Json;
 
 
 namespace Smartflow.Elements
 {
     public class ASTNode : Element
     {
+        [JsonProperty("unique")]
+        [XmlAttribute("identification")]
+        public override string IDENTIFICATION
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty("transitions")]
         [XmlElement(ElementName = "transition")]
         public virtual List<Transition> Transitions
         {
@@ -60,7 +70,7 @@ namespace Smartflow.Elements
         /// <param name="actorID"></param>
         /// <param name="actorName"></param>
         /// <param name="action"></param>
-        internal virtual void SetActor(long actorID,string actorName,WorkflowAction action)
+        internal virtual void SetActor(string actorID, string actorName, WorkflowAction action)
         {
             if (this.NodeType != WorkflowNodeCategeory.Decision)
             {

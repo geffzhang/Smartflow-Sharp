@@ -10,11 +10,21 @@ using System.Text;
 using Smartflow.Dapper;
 using Smartflow.Enums;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace Smartflow.Elements
 {
     public class Group : Element, IRelationShip
     {
+        [JsonProperty("id")]
+        [XmlAttribute("identification")]
+        public override string IDENTIFICATION
+        {
+            get;
+            set;
+        }
+
+        [JsonIgnore]
         public string RNID
         {
             get;

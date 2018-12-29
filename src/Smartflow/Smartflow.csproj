@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -43,7 +44,6 @@
   <ItemGroup>
     <Compile Include="Assert.cs" />
     <Compile Include="DapperFactory.cs" />
-    <Compile Include="DatabaseService.cs" />
     <Compile Include="DelegatingCompletedHandle.cs" />
     <Compile Include="DelegatingProcessHandle.cs" />
     <Compile Include="Elements\ASTNode.cs" />
@@ -51,6 +51,7 @@
     <Compile Include="Elements\Decision.cs" />
     <Compile Include="Elements\Element.cs" />
     <Compile Include="Elements\End.cs" />
+    <Compile Include="EnumConverter.cs" />
     <Compile Include="Enums\WorkflowAction.cs" />
     <Compile Include="ILogging.cs" />
     <Compile Include="IMailService.cs" />
@@ -60,15 +61,12 @@
     <Compile Include="Elements\Start.cs" />
     <Compile Include="Elements\Transition.cs" />
     <Compile Include="Elements\Workflow.cs" />
-    <Compile Include="Enums\DatabaseCategory.cs" />
     <Compile Include="Enums\WorkflowInstanceState.cs" />
     <Compile Include="Enums\WorkflowNodeCategeory.cs" />
     <Compile Include="ExecutingContext.cs" />
     <Compile Include="ITransition.cs" />
     <Compile Include="IPersistent.cs" />
     <Compile Include="IWorkflow.cs" />
-    <Compile Include="IWorkflowActor.cs" />
-    <Compile Include="IWorkflowConfiguration.cs" />
     <Compile Include="IWorkflowDesignService.cs" />
     <Compile Include="MailConfiguration.cs" />
     <Compile Include="MailService.cs" />
@@ -77,12 +75,10 @@
     <Compile Include="SmartflowConfiguration.cs" />
     <Compile Include="Elements\Actor.cs" />
     <Compile Include="SqlMapper.cs" />
-    <Compile Include="WorkflowActor.cs" />
     <Compile Include="WorkflowContext.cs" />
     <Compile Include="WorkflowDecision.cs" />
     <Compile Include="WorkflowDesignService.cs" />
     <Compile Include="WorkflowEngine.cs" />
-    <Compile Include="WorkflowConfig.cs" />
     <Compile Include="WorkflowException.cs" />
     <Compile Include="Infrastructure.cs" />
     <Compile Include="WorkflowLogging.cs" />

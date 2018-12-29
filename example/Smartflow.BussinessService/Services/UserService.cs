@@ -8,40 +8,13 @@ using Dapper;
 
 namespace Smartflow.BussinessService.Services
 {
-    public class UserService : BaseService
+    public class UserService : RepositoryService<User>
     {
         public List<User> GetUserList(string roleIDs)
         {
             string executeSql = @"SELECT * FROM T_USER WHERE IDENTIFICATION IN (SELECT UUID FROM T_UMR  WHERE RID IN (" + roleIDs + "))";
             return Connection.Query<User>(executeSql).ToList();
         }
-
-        public User GetUser(string userName)
-        {
-            string executeSql = @"SELECT * FROM T_USER WHERE USERNAME=@USERNAME";
-            return Connection.Query<User>(executeSql, new
-            {
-                USERNAME = userName
-            }).FirstOrDefault();
-        }
-
-        public List<User> GetUserList()
-        {
-            string executeSql = @" SELECT * FROM T_USER WHERE 1=1 ";
-            return Connection.Query<User>(executeSql).ToList();
-        }
-
-        public DataTable GetStatisticsDataTable()
-        {
-            string executeSql = @" SELECT USERNAME,EMPLOYEENAME,Z.APPELLATION FROM T_UMR X,T_USER Y,T_ROLE  Z WHERE X.RID=Z.IDENTIFICATION AND Y.IDENTIFICATION=X.UUID  ORDER BY Y.IDENTIFICATION ";
-            DataTable dt = new DataTable();
-            using (IDataReader dr = Connection.ExecuteReader(executeSql))
-            {
-                dt.Load(dr);
-            }
-            return dt;
-        }
-
 
         public List<User> GetPendingUserList(string nodeID, string instanceID)
         {

@@ -16,13 +16,13 @@ namespace Smartflow
     {
         public void Persistent(WorkflowStructure workflowStructure)
         {
-            string sql = " INSERT INTO T_STRUCTURE(IDENTIFICATION,APPELLATION,FILESTRUCTURE,STRUCTUREXML) VALUES(@IDENTIFICATION,@APPELLATION,@FILESTRUCTURE,@STRUCTUREXML) ";
+            string sql = " INSERT INTO T_STRUCTURE(IDENTIFICATION,APPELLATION,STRUCTUREXML) VALUES(@IDENTIFICATION,@APPELLATION,@STRUCTUREXML) ";
             Connection.Execute(sql, workflowStructure);
         }
 
         public void Update(WorkflowStructure workflowStructure)
         {
-            string sql = " UPDATE T_STRUCTURE SET APPELLATION=@APPELLATION,FILESTRUCTURE=@FILESTRUCTURE,STRUCTUREXML=@STRUCTUREXML WHERE IDENTIFICATION=@IDENTIFICATION ";
+            string sql = " UPDATE T_STRUCTURE SET APPELLATION=@APPELLATION,STRUCTUREXML=@STRUCTUREXML WHERE IDENTIFICATION=@IDENTIFICATION ";
             Connection.Execute(sql, workflowStructure);
         }
 

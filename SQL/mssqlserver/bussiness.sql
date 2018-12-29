@@ -50,16 +50,6 @@ if exists (select 1
             and   type = 'U')
    drop table dbo.t_umr
 go
-
-execute sp_revokedbaccess dbo
-go
-
-/*==============================================================*/
-/* User: dbo                                                    */
-/*==============================================================*/
-execute sp_grantdbaccess dbo
-go
-
 /*==============================================================*/
 /* Table: t_apply                                               */
 /*==============================================================*/
@@ -100,7 +90,7 @@ go
 /*==============================================================*/
 create table dbo.t_pending (
    IDENTIFICATION       bigint               identity(1, 1),
-   ACTORID              bigint               null,
+   ACTORID              varchar(50)          collate Chinese_PRC_CI_AS null,
    NODEID               varchar(50)          collate Chinese_PRC_CI_AS null,
    INSTANCEID           varchar(50)          collate Chinese_PRC_CI_AS null,
    APPELLATION          varchar(1024)        collate Chinese_PRC_CI_AS null,

@@ -13,6 +13,7 @@ namespace Smartflow
 {
     /// <summary>
     /// 定义统一日志处理
+    /// 可以使用log4j.net 的组件实现日志记录
     /// </summary>
     public class WorkflowLoggingService : ILogging
     {
@@ -25,12 +26,12 @@ namespace Smartflow
 
         public virtual void Error(string exception)
         {
-            logging.WriteEntry(exception, EventLogEntryType.Error);
+            //logging.WriteEntry(exception, EventLogEntryType.Error);
         }
 
         public virtual void Info(string message)
         {
-            logging.WriteEntry(message, EventLogEntryType.Information);
+            //logging.WriteEntry(message, EventLogEntryType.Information);
         }
     }
 }

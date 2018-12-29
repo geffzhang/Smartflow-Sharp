@@ -7,17 +7,19 @@ using System.Web.Mvc;
 using Smartflow.BussinessService.WorkflowService;
 using Smartflow.BussinessService.Services;
 using Smartflow.BussinessService.Models;
+using Smartflow.Web.Mvc.Controllers;
+using Smartflow.Web.Mvc.Code;
 
 namespace Smartflow.Web.Controllers
 {
-    public class DefaultController : Controller
+    public class DefaultController : BaseController
     {
-        private IWorkflowDesignService workflowStructureService=WorkflowServiceProvider.OfType<IWorkflowDesignService>();
+        private IWorkflowDesignService workflowStructureService = WorkflowServiceProvider.OfType<IWorkflowDesignService>();
+        private PendingService pendingService = new PendingService();
 
         public ActionResult Main()
         {
-            User userInfo = System.Web.HttpContext.Current.Session["user"] as User;
-            ViewBag.EmployeeName = userInfo.EMPLOYEENAME;
+            ViewBag.EmployeeName = UserInfo.EMPLOYEENAME;
             return View();
         }
 
@@ -32,45 +34,24 @@ namespace Smartflow.Web.Controllers
             return Json(true);
         }
 
-        public ActionResult Login()
-        {
-            return View();
-        }
 
         public ActionResult Pending()
         {
-            User userInfo = System.Web.HttpContext.Current.Session["user"] as User;
-            return View(new PendingService().Query(userInfo.IDENTIFICATION));
+            return View(pendingService.Query(mdl => mdl.ACTORID == UserInfo.IDENTIFICATION.ToString()));
         }
 
         public JsonResult GetPendingCount()
         {
-            User userInfo = System.Web.HttpContext.Current.Session["user"] as User;
-            if (userInfo == null)
-            {
-                return Json(0);
-            }
-            else
-            {
-                return Json(new PendingService().Query(userInfo.IDENTIFICATION).Count);
-            }
+            List<Pending> pendingList = pendingService.Query(pending =>
+                pending.ACTORID == UserInfo.IDENTIFICATION.ToString());
+
+            return Json(pendingList.Count);
         }
 
-
-        public JsonResult GetUser(string userName)
+        [UnAuthorizationMethodFilter]
+        public ActionResult Login()
         {
-            //演示使用
-            Smartflow.BussinessService.Models.User userInfo = new UserService().GetUser(userName);
-
-            if (userInfo == null)
-            {
-                return Json(false);
-            }
-            else
-            {
-                System.Web.HttpContext.Current.Session["user"] = userInfo;
-                return Json(true);
-            }
+            return View();
         }
     }
 }

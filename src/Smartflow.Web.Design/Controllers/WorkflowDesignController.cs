@@ -8,10 +8,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
-using System.Web.Script.Serialization;
-using Smartflow;
 using System.Data;
+using System.Web.Script.Serialization;
+
+using Smartflow;
+using Smartflow.Elements;
+using Newtonsoft.Json;
 
 namespace Smartflow.Web.Design.Controllers
 {
@@ -28,34 +30,45 @@ namespace Smartflow.Web.Design.Controllers
 
         public JsonResult GetWorkflowStructure(string WFID)
         {
-            WorkflowStructure model = designService.GetWorkflowStructure(WFID);
-            return Json(model);
+            WorkflowStructure workflowStructure = designService.GetWorkflowStructure(WFID);
+            return JsonToLowerWrapper(new
+            {
+                appellation = workflowStructure.APPELLATION,
+                structure = GetNodeList(workflowStructure.STRUCTUREXML)
+            });
         }
 
         public JsonResult Save(WorkflowStructure model)
         {
+            model.STRUCTUREXML = System.Web.HttpContext.Current.Server.UrlDecode(model.STRUCTUREXML);
             if (String.IsNullOrEmpty(model.IDENTIFICATION))
             {
                 model.IDENTIFICATION = Guid.NewGuid().ToString();
-                model.FILESTRUCTURE = HttpUtility.UrlDecode(model.FILESTRUCTURE);
                 designService.Persistent(model);
             }
             else
             {
-                model.FILESTRUCTURE = HttpUtility.UrlDecode(model.FILESTRUCTURE);
                 designService.Update(model);
             }
-            return Json(true);
+            return Json(true, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult WorkflowImage(string instanceID)
         {
-            JavaScriptSerializer serializer = new JavaScriptSerializer();
-            ViewBag.Result = serializer.Serialize(WorkflowInstance.GetInstance(instanceID));
+            WorkflowInstance instance = WorkflowInstance.GetInstance(instanceID);
+            string data = Newtonsoft.Json.JsonConvert.SerializeObject(new
+            {
+                structure = GetNodeList(instance.STRUCTUREXML),
+                id = instance.Current.IDENTIFICATION
+            }, new Newtonsoft.Json.JsonSerializerSettings()
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                ContractResolver = new LowerCaseContractResolver()
+            });
 
-            DataTable dt = WorkflowServiceProvider.OfType<IWorkflowActor>().GetRecord(instanceID);
+            ViewBag.Result = data;
+            DataTable dt = WorkflowNode.GetRecord(instanceID);
             ViewBag.Record = Newtonsoft.Json.JsonConvert.SerializeObject(dt);
-
             return View();
         }
 
@@ -71,9 +84,19 @@ namespace Smartflow.Web.Design.Controllers
 
         public JsonResult GetConfigs()
         {
-            return JsonWrapper(WorkflowServiceProvider
-                .OfType<IWorkflowConfiguration>()
-                .GetWorkflowConfigs());
+            return JsonWrapper(WorkflowDecision.GetSettings());
+        }
+
+        private List<Node> GetNodeList(string structure)
+        {
+            Workflow workflow = XmlConfiguration.ParseflowXml<Workflow>(structure);
+            List<Node> elements = new List<Node>();
+            elements.Add(workflow.StartNode);
+            elements.AddRange(workflow.ChildNode);
+            elements.AddRange(workflow.ChildDecisionNode);
+            elements.Add(workflow.EndNode);
+
+            return elements;
         }
     }
 }

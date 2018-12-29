@@ -16,6 +16,11 @@
     <link href="./css/sticky-footer-navbar.css" rel="stylesheet">
     <script type="text/javascript" src="./Content/common.js"></script>
     <script type="text/javascript" src="https://hm.baidu.com/hm.js?1d12f66f2f6f25504daa528cd96ea7e8"></script>
+    <style>
+        .jumbotron {
+            background-color: #fbf7f7;
+        }
+    </style>
 </head>
 <body>
     <!-- Fixed navbar -->
@@ -30,19 +35,14 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="/">首页</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">文档 <span class="caret"></span></a>
-                        <div class="dropdown-menu" aria-labelledby="download">
-                            <a class="dropdown-item" href="./doc.html">总体介绍</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="./integration.html">集成介绍</a>
-                        </div>
+                    <li class="nav-item">
+                        <a href="./doc.html" class="nav-link">文档</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="javascript:openWin('tool.html', 960, 560);">流程图设计工具</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="./donate.html">捐赠</a>
+                        <a class="nav-link" href="http://www.youdaogou.net" target="_blank">捐赠</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -62,19 +62,14 @@
                 <div class="jumbotron">
                     <h1>Hello, Smartflow-Sharp</h1>
                     <p class="lead text-justify">
-                        基于C#语言研发的Smartflow-Sharp工作流管理平台，该工作流管理平台的特点是简单易用、方便扩展、支持多种数据库访问、高度可定制化，支持用户按需求做功能的定制开发，节省用户的使用成本。
-                        Smartflow-Sharp工作流管理平台目前包含工作流引擎、工作流流程设计器，支持流程在线设计。工作流引擎负责提供对流程的解析，并驱动流程的流转，是工作流平台核心部件。流程设计器是基于SVG研发，支持所有主流浏览器，IE浏览器只支持IE9以上的版本。工作流平台研发所采用的技术框架和工具是Vs2013+ Dapper+ASP.NET MVC4.0+.NETFX4.0。为了便于后续扩展，支持其他的数据库的访问，经过慎重考虑采用Dapper组件。Dapper组件对原生SQL语句支持性比较友好，且支持所有主流数据库系统访问。
+                        基于C#语言研发的Smartflow-Sharp工作流管理平台，该工作流管理平台的特点是简单易用、方便扩展、支持多种数据库访问、高度可定制化、支持用户按需求做功能的定制开发，节省用户的使用成本。
+                        Smartflow-Sharp工作流管理平台目前包含工作流引擎、工作流流程设计器，支持流程在线设计。工作流引擎负责提供对流程的解析，并驱动流程的流转，是工作流平台核心部件。
                     </p>
                     <p>
                         <a class="btn btn-primary btn-lg " href="https://github.com/chengderen/Smartflow-Sharp/zipball/master" role="button">Getting Started</a>
                     </p>
                 </div>
             </div>
-            <!--<div class="col-md-5">
-                <div class="thumbnail">
-                    <img src="./css/tool.png" alt="工作流程图" />
-                </div>
-            </div>-->
         </div>
     </div>
     <footer class="footer">
@@ -82,7 +77,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <p class="text-muted text-left">
-                        &copy;2018&nbsp;<a href="/" target="_self">Smartflow-Sharp</a> Inc. All rights reserved.
+                        &copy;2018&nbsp;<a href="/" target="_self" style="color:#868e96;">Smartflow-Sharp</a> Inc. All rights reserved.
                     </p>
                 </div>
             </div>

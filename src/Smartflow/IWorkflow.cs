@@ -25,6 +25,13 @@ namespace Smartflow
         string Start(WorkflowStructure workflowStructure);
 
         /// <summary>
+        /// 部署工作流
+        /// </summary>
+        /// <param name="resourceXml">流程结构</param>
+        /// <returns></returns>
+        string StartWorkflow(string resourceXml);
+
+        /// <summary>
         /// 终结流程
         /// </summary>
         /// <param name="instance">流程实例</param>

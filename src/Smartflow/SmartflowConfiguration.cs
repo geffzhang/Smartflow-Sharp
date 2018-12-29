@@ -27,14 +27,14 @@ namespace Smartflow
         }
 
         /// <summary>
-        /// 工作流数据库类别
+        ///
         /// </summary>
-        [ConfigurationProperty("category",
+        [ConfigurationProperty("providerName",
             IsRequired = true,
-            DefaultValue = "SQLServer")]
-        public string DatabaseCategory
+            DefaultValue = "System.Data.SqlClient")]
+        public string ProviderName
         {
-            get { return this["category"].ToString(); }
+            get { return this["providerName"].ToString(); }
         }
     }
 }

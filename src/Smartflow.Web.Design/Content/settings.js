@@ -46,7 +46,7 @@
         id: 'IDENTIFICATION',
         name: 'APPELLATION',
         connection: 'CONNECTE',
-        category: 'DBCATEGORY'
+        provider: 'PROVIDERNAME'
     };
 
     $.extend(String.prototype, {
@@ -88,8 +88,8 @@
         ajaxSettings.data.searchKey = key;
 
         ajaxSettings.success = function (serverData) {
-            var build = new StringBuilder(),
-                Abuild = new StringBuilder();
+            var build = util.builder(),
+                Abuild = util.builder();
             $.each(serverData, function () {
                 build.append(config.start)
                     .append('li')
@@ -153,8 +153,7 @@
         var roles = [],
             expressions = [],
             name = $("#txtNodeName").val();
-
-        if (nx.category === 'decision') {
+        if (nx.category.toLowerCase() === 'decision') {
             $("#transitions tbody input").each(function () {
                 var input = $(this);
                 expressions.push({ id: input.attr("id"), expression: input.val() });
@@ -168,8 +167,8 @@
                 nx.command = {
                     identification: data[configFieldMap.id],
                     script: cmdText,
-                    connecte: data[configFieldMap.connect],
-                    dbcategory: data[configFieldMap.category],
+                    connecte: data[configFieldMap.connection],
+                    providername: data[configFieldMap.provider],
                     commandtype: 'text'
                 };
             }
@@ -190,11 +189,11 @@
 
     function setNodeToSettings(nx) {
         $("#txtNodeName").val(nx.name);
-        if (nx.category === 'decision') {
+        if (nx.category.toLowerCase() === 'decision') {
             var lineCollection = nx.getTransitions();
             if (lineCollection.length > 0) {
                 var unqiueId = 'lineTo',
-                    build = new StringBuilder();
+                    build = util.builder();
                 $.each(lineCollection, function (i) {
                     build.append(lineTemplate.format(this.name, this.expression, this.id));
                 });
@@ -209,8 +208,7 @@
         } else {
             loadRoleGrid(nx.group);
         }
-
-        var items = tabConfig[nx.category];
+        var items = tabConfig[nx.category.toLocaleLowerCase()];
         $.each(items, function (i, selector) {
             $(selector).hide();
         });
@@ -221,7 +219,7 @@
             url: config.configUrl
         };
         settings.success = function (serverData) {
-            var build = new StringBuilder();
+            var build =util.builder();
             $.each(serverData, function () {
                 var data = JSON.stringify(this);
 
@@ -257,20 +255,6 @@
             cache: false
         }, settings);
         $.ajax(defaultSettings);
-    }
-
-    function StringBuilder() {
-        this.elements = [];
-    }
-    StringBuilder.prototype = {
-        constructor: StringBuilder,
-        append: function (text) {
-            this.elements.push(text);
-            return this;
-        },
-        toString: function () {
-            return this.elements.join('');
-        }
     }
 
     function doSearch(searchKey) {

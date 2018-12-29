@@ -20,8 +20,6 @@ namespace Smartflow
             _collection.Add(new WorkflowLoggingService());
             _collection.Add(new WorkflowService());
             _collection.Add(new MailService());
-            _collection.Add(new WorkflowConfig());
-            _collection.Add(new WorkflowActor());
             _collection.Add(new WorkflowDesignService());
         }
 

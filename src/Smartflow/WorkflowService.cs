@@ -22,7 +22,7 @@ namespace Smartflow
         {
             try
             {
-                Workflow workflow = XmlConfiguration.ParseflowXml<Workflow>(workflowStructure.FILESTRUCTURE);
+                Workflow workflow = XmlConfiguration.ParseflowXml<Workflow>(workflowStructure.STRUCTUREXML);
                 List<Element> elements = new List<Element>();
                 elements.Add(workflow.StartNode);
                 elements.AddRange(workflow.ChildNode);
@@ -41,6 +41,24 @@ namespace Smartflow
             {
                 throw new WorkflowException(ex);
             }
+        }
+
+        public string StartWorkflow(string resourceXml)
+        {
+            Workflow workflow = XmlConfiguration.ParseflowXml<Workflow>(resourceXml);
+            List<Element> elements = new List<Element>();
+            elements.Add(workflow.StartNode);
+            elements.AddRange(workflow.ChildNode);
+            elements.AddRange(workflow.ChildDecisionNode);
+            elements.Add(workflow.EndNode);
+
+            string instaceID = CreateWorkflowInstance(workflow.StartNode.IDENTIFICATION,"0",resourceXml);
+            foreach (Element element in elements)
+            {
+                element.INSTANCEID = instaceID;
+                element.Persistent();
+            }
+            return instaceID;
         }
 
         public void Kill(WorkflowInstance instance)
@@ -70,7 +88,7 @@ namespace Smartflow
             }
         }
 
-        protected string CreateWorkflowInstance(long startNID, string structureID, string structure)
+        protected string CreateWorkflowInstance(string startNID, string structureID, string structure)
         {
             return WorkflowInstance.CreateWorkflowInstance(startNID, structureID, structure);
         }

@@ -7,17 +7,14 @@
     <title>Smartflow-Sharp工作流管理平台</title>
     <link href="~/Content/login.css" rel="stylesheet" />
     <script src="~/Content/jquery.min.js"></script>
-
     <script type="text/javascript">
-
         $(function () {
-
             //用于演示
             $("#btnLogin").click(function () {
                 var userName = document.getElementById("userName").value;
                 if ($.trim(userName)) {
                     $.ajax({
-                        url: '@Url.Action("GetUser","Default")',
+                        url: '@Url.Action("GetUser","User")',
                         data: { userName: userName },
                         dataType: 'json',
                         type: 'post',
@@ -33,7 +30,6 @@
                 }
             });
         });
-
     </script>
 </head>
 <body>

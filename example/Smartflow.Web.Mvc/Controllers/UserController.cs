@@ -11,18 +11,21 @@ namespace Smartflow.Web.Mvc.Controllers
     {
         private UserService userService = new UserService();
 
-        //
-        // GET: /User/
-        public ActionResult UserList()
+        public JsonResult GetUser(string userName)
         {
-            return View(userService.GetUserList());
-        }
+            //演示使用
+            Smartflow.BussinessService.Models.User userInfo = new UserService()
+                .Get(u=>u.USERNAME==userName);
 
-        //
-        // GET: /User/
-        public ActionResult RoleStatistics()
-        {
-            return View(userService.GetStatisticsDataTable());
+            if (userInfo == null)
+            {
+                return Json(false);
+            }
+            else
+            {
+                System.Web.HttpContext.Current.Session["user"] = userInfo;
+                return Json(true);
+            }
         }
     }
 }

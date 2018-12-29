@@ -13,7 +13,7 @@ using System.Xml.Serialization;
 
 namespace Smartflow
 {
-    internal sealed class XmlConfiguration
+    public sealed class XmlConfiguration
     {
         public static T ParseXml<T>(string path)
         {

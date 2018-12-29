@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using Smartflow.Dapper;
 using Smartflow.Enums;
+using Newtonsoft.Json;
+using System.Xml.Serialization;
 
 namespace Smartflow.Elements
 {

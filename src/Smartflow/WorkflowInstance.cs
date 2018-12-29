@@ -81,7 +81,7 @@ namespace Smartflow
         /// 进行流程跳转
         /// </summary>
         /// <param name="transitionTo">选择跳转路线</param>
-        internal void Jump(long transitionTo)
+        internal void Jump(string transitionTo)
         {
             string update = " UPDATE T_INSTANCE SET RNID=@RNID WHERE INSTANCEID=@INSTANCEID ";
             Connection.Execute(update, new
@@ -104,7 +104,7 @@ namespace Smartflow
             });
         }
 
-        internal static string CreateWorkflowInstance(long nodeID, string structureID, string structureXml)
+        internal static string CreateWorkflowInstance(string nodeID, string structureID, string structureXml)
         {
             WorkflowInstance instance = new WorkflowInstance();
             string instanceID = Guid.NewGuid().ToString();

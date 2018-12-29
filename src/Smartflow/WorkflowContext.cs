@@ -16,7 +16,7 @@ namespace Smartflow
             set;
         }
 
-        public long ActorID
+        public string ActorID
         {
             get;
             set;

@@ -11,47 +11,29 @@ using System.Text;
 
 using Smartflow.Enums;
 using System.Data.OracleClient;
+using System.Data.Common;
 
 namespace Smartflow
 {
     public class DapperFactory
     {
-        public static IDbConnection CreateWorkflowConnection()
+        internal static IDbConnection CreateWorkflowConnection()
         {
-            SmartflowConfiguration config = ConfigurationManager.GetSection("smartflowConfiguration") as SmartflowConfiguration;
+            SmartflowConfiguration config = ConfigurationManager.GetSection("smartflowConfiguration") as
+                SmartflowConfiguration;
 
-            Assert.CheckNull(config, "smartflowConfiguration");
-            Assert.StringNull(config.ConnectionString, "ConnectionString");
-            Assert.StringNull(config.DatabaseCategory, "DatabaseCategory");
-
-            DatabaseCategory dbc;
-            if (Enum.TryParse(config.DatabaseCategory, true, out dbc) || String.IsNullOrEmpty(config.ConnectionString))
-            {
-                return DapperFactory.CreateConnection(dbc, config.ConnectionString);
-            }
-            else
-            {
-                throw new WorkflowException(ResourceManage.GetString(ResourceManage.CONNECTION_CONFIG));
-            }
+            Assert.CheckNull(config, "SmartflowConfiguration");
+            return DapperFactory.CreateConnection(config.ProviderName, config.ConnectionString);
         }
 
-        public static IDbConnection CreateConnection(DatabaseCategory dbc, string connectionString)
+        public static IDbConnection CreateConnection(string providerName, string connectionString)
         {
-            IDbConnection connection = null;
-            switch (dbc)
-            {
-                case DatabaseCategory.SQLServer:
-                    connection = DatabaseService.CreateInstance(new SqlConnection(connectionString));
-                    break;
-                case DatabaseCategory.Oracle:
-                    //ms 提供
-                    connection = DatabaseService.CreateInstance(new OracleConnection(connectionString));
-                    break;
-                case DatabaseCategory.MySQL:
-                    //需要自已提供Dll
-                    //connection = DatabaseService.CreateInstance(new SqlConnection(connectionString));
-                    break;
-            }
+            Assert.StringNull(connectionString, "ConnectionString");
+            Assert.StringNull(providerName, "ProviderName");
+
+            IDbConnection connection =
+                DbProviderFactories.GetFactory(providerName).CreateConnection();
+            connection.ConnectionString = connectionString;
             return connection;
         }
     }

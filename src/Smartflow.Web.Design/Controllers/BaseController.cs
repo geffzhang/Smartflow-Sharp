@@ -1,11 +1,17 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+﻿/********************************************************************
+ License: https://github.com/chengderen/Smartflow/blob/master/LICENSE 
+ Home page: https://www.smartflow-sharp.com
+ ********************************************************************
+ */
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Smartflow.Web.Design.Controllers
 {
@@ -19,16 +25,37 @@ namespace Smartflow.Web.Design.Controllers
                 ContentType = "application/json"
             };
         }
+
+        public JsonResult JsonToLowerWrapper(Object data)
+        {
+            return new JsonResultWrapper()
+            {
+                ContractResolver = new LowerCaseContractResolver(),
+                Data = data,
+                ContentType = "application/json"
+            };
+        }
     }
 
     public class JsonResultWrapper : JsonResult
     {
+        public IContractResolver ContractResolver
+        {
+            get;
+            set;
+        }
+
         public JsonResultWrapper()
             : base()
         {
-
+            ContractResolver = new UpperCaseContractResolver();
         }
 
+        public JsonResultWrapper(IContractResolver ContractResolver)
+            : base()
+        {
+            this.ContractResolver = ContractResolver;
+        }
         public override void ExecuteResult(ControllerContext context)
         {
             HttpResponseBase response = context.HttpContext.Response;
@@ -36,19 +63,25 @@ namespace Smartflow.Web.Design.Controllers
                 new Newtonsoft.Json.JsonSerializerSettings()
                 {
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                    //ContractResolver=new DefaultContractResolver()
-                    ContractResolver = new UpperCaseContractResolver()
-
+                    ContractResolver = ContractResolver
                 });
             response.Write(data);
         }
+    }
 
-        public class UpperCaseContractResolver : Newtonsoft.Json.Serialization.DefaultContractResolver
+    public class UpperCaseContractResolver : DefaultContractResolver
+    {
+        protected override string ResolvePropertyName(string propertyName)
         {
-            protected override string ResolvePropertyName(string propertyName)
-            {
-                return propertyName.ToUpper();
-            }
+            return propertyName.ToUpper();
+        }
+    }
+
+    public class LowerCaseContractResolver : DefaultContractResolver
+    {
+        protected override string ResolvePropertyName(string propertyName)
+        {
+            return propertyName.ToLower();
         }
     }
 }

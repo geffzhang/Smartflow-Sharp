@@ -11,17 +11,18 @@
     <script src="~/Content/jquery.min.js"></script>
     <script src="~/Content/json2.js"></script>
     <script src="~/Content/svg.js"></script>
+    <script src="~/Content/utils.js"></script>
     <script src="~/Content/smartflow.js"></script>
     <script type="text/javascript">
-    $(function () {
-        var draw = window.SMF.init({container:'drawing'}),
-                serverData=@Html.Raw(ViewBag.Result),
-                processData=@(ViewBag.Record==null?"''":Html.Raw(ViewBag.Record));
+        $(function () {
+            var draw = window.SMF.init({container:'drawing'}),
+                    serverData=@Html.Raw(ViewBag.Result),
+                    processData=@(ViewBag.Record==null?"''":Html.Raw(ViewBag.Record));
             if (serverData) {
-                SMF.revert(serverData.STRUCTUREXML, true, serverData.Current.IDENTIFICATION,processData);
+                SMF.revert(serverData.structure, true, serverData.id,processData);
             }
-        });
-</script>
+        })
+    </script>
 </head>
 <body>
     <div class="container">

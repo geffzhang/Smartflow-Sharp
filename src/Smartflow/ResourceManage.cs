@@ -18,11 +18,6 @@ namespace Smartflow
     internal class ResourceManage
     {
         /// <summary>
-        /// 连接配置异常信息
-        /// </summary>
-        public const string CONNECTION_CONFIG = "CONNECTION_CONFIG";
-        
-        /// <summary>
         /// 参与过审批操作信息
         /// </summary>
         public const string SQL_ACTOR_RECORD = "SQL_ACTOR_RECORD";

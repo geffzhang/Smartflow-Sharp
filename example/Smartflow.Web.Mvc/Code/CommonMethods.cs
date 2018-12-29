@@ -11,17 +11,18 @@ namespace Smartflow.Web.Mvc.Code
 {
     public class CommonMethods
     {
-        public static bool CheckAuth(string nodeID, string instanceID)
+        public static bool CheckAuth(string nodeID, string instanceID, User userInfo)
         {
-            User userInfo = System.Web.HttpContext.Current.Session["user"] as User;
-            return new PendingService().Check(userInfo.IDENTIFICATION.ToString(), nodeID, instanceID);
+            return (new PendingService().Query(pending => pending.ACTORID == userInfo.IDENTIFICATION.ToString()
+                && pending.NODEID == nodeID
+                && pending.INSTANCEID == instanceID).FirstOrDefault() != null);
+
         }
 
-        public static bool CheckUndoAuth(string instanceID)
+        public static bool CheckUndoAuth(string instanceID, User userInfo)
         {
             WorkflowInstance instance = WorkflowInstance.GetInstance(instanceID);
-            User userInfo = System.Web.HttpContext.Current.Session["user"] as User;
-            return instance.Current.GetFromNode().GetActors().Count(e => e.IDENTIFICATION == userInfo.IDENTIFICATION) > 0;
+            return instance.Current.GetFromNode().GetActors().Count(e => e.IDENTIFICATION == userInfo.IDENTIFICATION.ToString()) > 0;
         }
 
         public static bool CheckUndoButton(string instanceID)

@@ -8,22 +8,23 @@ using Smartflow.BussinessService.Models;
 using Smartflow.BussinessService.WorkflowService;
 using Smartflow.BussinessService.Services;
 using Smartflow.Web.Mvc.Code;
+using Smartflow.Web.Mvc.Controllers;
 
 namespace Smartflow.Web.Controllers
 {
-    public class FileApplyController : Controller
+    public class FileApplyController : BaseController
     {
         private BaseWorkflowService bwfs = BaseWorkflowService.Instance;
-        private ApplyService fileApplyService = new ApplyService();
+        private FileApplyService fileApplyService = new FileApplyService();
 
-        public ActionResult Save(Apply model)
+        public ActionResult Save(FileApply model)
         {
             model.STATUS = 0;
             fileApplyService.Persistent(model);
             return RedirectToAction("FileApplyList");
         }
 
-        public ActionResult Submit(Apply model)
+        public ActionResult Submit(FileApply model)
         {
             model.INSTANCEID = bwfs.Start(model.STRUCTUREID);
             model.STATUS = 1;
@@ -51,7 +52,7 @@ namespace Smartflow.Web.Controllers
             }
             else
             {
-                Apply mdl = fileApplyService.GetInstance(long.Parse(id));
+                FileApply mdl = fileApplyService.Get(long.Parse(id));
                 GenerateSecretViewData(mdl.SECRETGRADE);
                 GenerateWFViewData(mdl.STRUCTUREID);
 
@@ -63,9 +64,9 @@ namespace Smartflow.Web.Controllers
                     ViewBag.ButtonName = current.APPELLATION;
                     ViewBag.PreviousButtonName = executeNode == null ? String.Empty : executeNode.APPELLATION;
                     ViewBag.UndoCheck = CommonMethods.CheckUndoButton(mdl.INSTANCEID);
-                    ViewBag.UndoAuth = executeNode == null ? true : CommonMethods.CheckUndoAuth(mdl.INSTANCEID);
-                    ViewBag.JumpAuth = current.APPELLATION == "开始" ? true : CommonMethods.CheckAuth(current.NID, mdl.INSTANCEID);
-                    ViewBag.UserList= new UserService().GetPendingUserList(current.NID, mdl.INSTANCEID);
+                    ViewBag.UndoAuth = executeNode == null ? true : CommonMethods.CheckUndoAuth(mdl.INSTANCEID, UserInfo);
+                    ViewBag.JumpAuth = current.APPELLATION == "开始" ? true : CommonMethods.CheckAuth(current.NID, mdl.INSTANCEID, UserInfo);
+                    ViewBag.UserList = new UserService().GetPendingUserList(current.NID, mdl.INSTANCEID);
                 }
                 return View(mdl);
             }
@@ -76,8 +77,7 @@ namespace Smartflow.Web.Controllers
             List<WorkflowStructure> workflowXmlList = WorkflowServiceProvider
                 .OfType<IWorkflowDesignService>()
                 .GetWorkflowStructureList();
-            
-            
+
             List<SelectListItem> fileList = new List<SelectListItem>();
             foreach (WorkflowStructure item in workflowXmlList)
             {
@@ -91,8 +91,7 @@ namespace Smartflow.Web.Controllers
             List<string> secrets = new List<string>() { 
               "非密",
               "秘密",
-              "机密",
-              "绝密"
+              "机密"
             };
             List<SelectListItem> list = new List<SelectListItem>();
             foreach (string secret in secrets)

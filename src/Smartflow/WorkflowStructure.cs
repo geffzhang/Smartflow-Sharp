@@ -24,12 +24,6 @@ namespace Smartflow
             set;
         }
 
-        public string FILESTRUCTURE
-        {
-            get;
-            set;
-        }
-
         public string STRUCTUREXML
         {
             get;

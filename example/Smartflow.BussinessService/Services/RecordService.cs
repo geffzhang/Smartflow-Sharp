@@ -8,22 +8,7 @@ using Smartflow.BussinessService.Models;
 
 namespace Smartflow.BussinessService.Services
 {
-    public class RecordService:BaseService
+    public class RecordService : RepositoryService<Record>
     {
-        public void Persistent(Record model)
-        {
-            string sql = "INSERT INTO T_RECORD(NODENAME,MESSAGE,INSTANCEID) VALUES (@NODENAME,@MESSAGE,@INSTANCEID)";
-            Connection.Execute(sql, model);
-        }
-
-        public List<Record> Query(string WFID)
-        {
-            string sql = " SELECT * FROM T_RECORD WHERE INSTANCEID=@INSTANCEID ORDER BY INSERTDATE ASC ";
-            return Connection.Query<Record>(sql, new
-            {
-                INSTANCEID = WFID
-
-            }).ToList();
-        }
     }
 }

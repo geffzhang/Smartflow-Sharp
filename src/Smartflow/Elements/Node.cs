@@ -12,6 +12,9 @@ using System.Xml.Serialization;
 
 using Smartflow.Dapper;
 using Smartflow.Enums;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
 
 namespace Smartflow.Elements
 {
@@ -21,12 +24,22 @@ namespace Smartflow.Elements
     {
         private WorkflowNodeCategeory _nodeType = WorkflowNodeCategeory.Normal;
 
+        [JsonProperty("category", ItemConverterType = typeof(EnumConverter))]
         public override WorkflowNodeCategeory NodeType
         {
             get { return _nodeType; }
             set { _nodeType = value; }
         }
 
+        [JsonProperty("layout")]
+        [XmlAttribute("layout")]
+        public virtual string Layout
+        {
+            get;
+            set;
+        }
+
+        [JsonProperty("group")]
         [XmlElement(ElementName = "group")]
         public virtual List<Group> Groups
         {
@@ -49,7 +62,7 @@ namespace Smartflow.Elements
                 }
             }
 
-            if (Groups!= null)
+            if (Groups != null)
             {
                 foreach (Group r in Groups)
                 {
@@ -60,7 +73,7 @@ namespace Smartflow.Elements
             }
         }
 
-        public ASTNode GetNode(long IDENTIFICATION)
+        public ASTNode GetNode(string IDENTIFICATION)
         {
             string query = "SELECT * FROM T_NODE WHERE IDENTIFICATION=@IDENTIFICATION AND INSTANCEID=@INSTANCEID";
             ASTNode node = Connection.Query<ASTNode>(query, new

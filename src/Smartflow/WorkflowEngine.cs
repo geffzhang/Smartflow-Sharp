@@ -59,6 +59,16 @@ namespace Smartflow
         }
 
         /// <summary>
+        /// 根据传递的流程XML字符串,启动工作流
+        /// </summary>
+        /// <param name="resourceXml"></param>
+        /// <returns></returns>
+        public string StartWorkflow(string resourceXml)
+        {
+            return workflowService.StartWorkflow(resourceXml);
+        }
+
+        /// <summary>
         /// 终止流程
         /// </summary>
         /// <param name="instance">工作流实例</param>
@@ -100,7 +110,7 @@ namespace Smartflow
 
                 if (CheckAuthorization(context) == false) return;
 
-                long transitionTo = current.Transitions
+                string transitionTo = current.Transitions
                                   .FirstOrDefault(e => e.NID == context.TransitionID).DESTINATION;
 
                 current.SetActor(context.ActorID, context.ActorName, WorkflowAction.Jump);

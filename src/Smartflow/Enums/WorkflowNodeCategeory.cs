@@ -8,18 +8,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Linq;
+
 namespace Smartflow.Enums
 {
     /// <summary>
     /// 工作流节点类型
     /// </summary>
+    [JsonConverter(typeof(EnumConverter))]
     public enum WorkflowNodeCategeory
     {
         /// <summary>
         /// 开始节点
         /// </summary>
         Start,
-        
+
         /// <summary>
         /// 普通节点
         /// </summary>

@@ -117,9 +117,6 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="CONNECTION_CONFIG" xml:space="preserve">
-    <value>请检查数据库连接配置</value>
-  </data>
   <data name="MAIL_URL_EXPRESSION" xml:space="preserve">
     <value>^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$</value>
     <comment>验证邮件地址正则表达式</comment>
@@ -138,7 +135,7 @@
     <comment>获取流程图中的title信息</comment>
   </data>
   <data name="SQL_WORKFLOW_INSTANCE" xml:space="preserve">
-    <value>SELECT X.INSTANCEID,X.RNID,X.STRUCTUREXML,Y.APPELLATION,Y.NID,Y.IDENTIFICATION,Y.NODETYPE,Y.INSTANCEID FROM T_INSTANCE X INNER JOIN  T_NODE Y  ON (X.INSTANCEID=Y.INSTANCEID AND X.RNID=Y.IDENTIFICATION) WHERE X.INSTANCEID=@INSTANCEID</value>
+    <value>SELECT X.INSTANCEID,X.RNID,X.STRUCTUREXML,X.STRUCTUREID,Y.APPELLATION,Y.NID,Y.IDENTIFICATION,Y.NODETYPE,Y.INSTANCEID FROM T_INSTANCE X INNER JOIN  T_NODE Y  ON (X.INSTANCEID=Y.INSTANCEID AND X.RNID=Y.IDENTIFICATION) WHERE X.INSTANCEID=@INSTANCEID</value>
     <comment>流程实例信息</comment>
   </data>
   <data name="SQL_WORKFLOW_PROCESS" xml:space="preserve">

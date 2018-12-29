@@ -42,7 +42,7 @@ namespace Smartflow
         public Transition GetTransition()
         {
             Command CMD = GetExecuteCmd();
-            IDbConnection connect = DapperFactory.CreateConnection(CMD.DBCATEGORY, CMD.CONNECTE);
+            IDbConnection connect = DapperFactory.CreateConnection(CMD.PROVIDERNAME, CMD.CONNECTE);
             try
             {
                 DataTable resultSet = new DataTable(Guid.NewGuid().ToString());
@@ -64,7 +64,6 @@ namespace Smartflow
                         }
                     }
                 }
-                
                 Assert.CheckNull(instance, "instance");
                 return instance;
             }
@@ -84,5 +83,17 @@ namespace Smartflow
             return Connection.Query<Command>(query, new { RNID = NID })
                   .FirstOrDefault();
         }
+
+        public static DataTable GetSettings()
+        {
+            string query = " SELECT * FROM T_CONFIG ";
+            DataTable configData = new DataTable(Guid.NewGuid().ToString());
+            using (IDataReader dr = DapperFactory.CreateWorkflowConnection().ExecuteReader(query))
+            {
+                configData.Load(dr);
+            }
+            return configData;
+        }
+
     }
 }

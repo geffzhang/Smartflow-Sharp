@@ -49,7 +49,7 @@ namespace Smartflow
         /// <summary>
         /// 当前参与执行者ID
         /// </summary>
-        public long ActorID
+        public string ActorID
         {
             get;
             set;

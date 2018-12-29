@@ -11,6 +11,7 @@ using System.Text;
 using System.Xml.Serialization;
 
 using Smartflow.Enums;
+using Newtonsoft.Json;
 namespace Smartflow.Elements
 {
 
@@ -21,7 +22,7 @@ namespace Smartflow.Elements
     public abstract class Element : Infrastructure
     {
         [XmlAttribute("identification")]
-        public virtual long IDENTIFICATION
+        public virtual string IDENTIFICATION
         {
             get;
             set;
@@ -30,6 +31,7 @@ namespace Smartflow.Elements
         /// <summary>
         /// 节点唯一标识
         /// </summary>
+        [JsonIgnore]
         [XmlIgnore]
         public string NID
         {
@@ -37,6 +39,7 @@ namespace Smartflow.Elements
             set;
         }
 
+        [JsonProperty("name")]
         [XmlAttribute("appellation")]
         public virtual string APPELLATION
         {
@@ -44,6 +47,7 @@ namespace Smartflow.Elements
             set;
         }
 
+        [JsonIgnore]
         [XmlIgnore]
         public virtual string INSTANCEID
         {
