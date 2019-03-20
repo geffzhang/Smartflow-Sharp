@@ -16,8 +16,16 @@ using Newtonsoft.Json;
 namespace Smartflow.Elements
 {
     [XmlInclude(typeof(Node))]
-    public class Transition : Element, IRelationShip
+    public class Transition : Element, IRelationship
     {
+        [JsonProperty("name")]
+        [XmlAttribute("name")]
+        public virtual string Name
+        {
+            get;
+            set;
+        }
+
         [JsonProperty("layout")]
         [XmlAttribute("layout")]
         public virtual string Layout
@@ -27,14 +35,14 @@ namespace Smartflow.Elements
         }
 
         [JsonIgnore]
-        public string RNID
+        public string RelationshipID
         {
             get;
             set;
         }
 
         [JsonIgnore]
-        public string ORIGIN
+        public string Origin
         {
             get;
             set;
@@ -42,15 +50,15 @@ namespace Smartflow.Elements
 
         [JsonProperty("destination")]
         [XmlAttribute("destination")]
-        public string DESTINATION
+        public string Destination
         {
             get;
             set;
         }
 
         [JsonProperty("expression")]
-        [XmlAttribute("expression")]
-        public string EXPRESSION
+        [XmlText(typeof(string))]
+        public string Expression
         {
             get;
             set;
@@ -58,16 +66,16 @@ namespace Smartflow.Elements
 
         internal override void Persistent()
         {
-            string sql = "INSERT INTO T_TRANSITION(NID,RNID,APPELLATION,DESTINATION,ORIGIN,INSTANCEID,EXPRESSION) VALUES(@NID,@RNID,@APPELLATION,@DESTINATION,@ORIGIN,@INSTANCEID,@EXPRESSION)";
+            string sql = "INSERT INTO T_TRANSITION(NID,RelationshipID,Name,Destination,Origin,InstanceID,Expression) VALUES(@NID,@RelationshipID,@Name,@Destination,@Origin,@InstanceID,@Expression)";
             Connection.Execute(sql, new
             {
                 NID = Guid.NewGuid().ToString(),
-                RNID = RNID,
-                APPELLATION = APPELLATION,
-                DESTINATION = DESTINATION,
-                ORIGIN = ORIGIN,
-                INSTANCEID = INSTANCEID,
-                EXPRESSION = EXPRESSION
+                RelationshipID = RelationshipID,
+                Name = Name,
+                Destination = Destination,
+                Origin = Origin,
+                InstanceID = InstanceID,
+                Expression = Expression
             });
         }
     }

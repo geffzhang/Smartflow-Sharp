@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Smartflow.BussinessService.WorkflowService
 {
-    public partial  class BaseWorkflowService
+    public partial class BaseWorkflowService
     {
         private static WorkflowEngine context = BaseWorkflowEngine.CreateWorkflowEngine();
         private readonly static BaseWorkflowService singleton = new BaseWorkflowService();
@@ -74,10 +74,12 @@ namespace Smartflow.BussinessService.WorkflowService
                 ActorName = actorName
             });
         }
-      
+
         public string Start(string identification)
         {
-            return context.Start(identification);
+            WorkflowDesignService workflowDesignService = new WorkflowDesignService();
+            WorkflowStructure structure = workflowDesignService.GetWorkflowStructure(identification);
+            return context.Start(structure.STRUCTUREXML);
         }
 
         public void Jump(string instanceID, string transitionID, string actorID, string actorName, dynamic data)

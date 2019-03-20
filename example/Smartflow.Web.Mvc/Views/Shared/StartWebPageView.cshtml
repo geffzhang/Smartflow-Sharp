@@ -1,0 +1,65 @@
+﻿@using System.Collections.Generic
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>WebPageView</title>
+    <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Content/main.css" rel="stylesheet" />
+    <script src="~/Content/jquery.min.js"></script>
+    <script src="~/Content/layui/layui.all.js"></script>
+    <script type="text/javascript">
+        window.smart = {
+            version: '1.0',
+            path:'@Url.Content("~")'
+        };
+    </script>
+    <script type="text/javascript">
+
+
+
+        smart.env = {
+            config: {
+                name: 't_file',
+                group: 'apply',
+                identification: 'FileApply'
+            }
+        };
+
+        //客户端需要订阅：smart.beforeSubmit
+        //客户端需要订阅：smart.loadRecord
+    </script>
+</head>
+<body>
+    @foreach (Smartflow.Elements.Form form in ViewBag.Stack)
+    {
+        @Html.Raw(form.Text)
+    }
+
+    <input type="button" value="启动流程" id="btnStart" onclick="smart.start()" />
+
+    <script src="~/Content/smartflow.form.js"></script>
+    <script type="text/javascript">
+
+        smart.beforeStart = function () {
+
+            var groupName = smart.env.config.group;
+            var O = {};
+
+            $("[group=" + groupName + "]").each(function () {
+
+                var attrName = $(this).attr('name');
+                var value = $(this).val();
+                if (!O[attrName]) {
+                    O[attrName] = value;
+                }
+            });
+
+            return O;
+        }
+    </script>
+</body>
+</html>

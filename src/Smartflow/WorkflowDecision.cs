@@ -27,10 +27,10 @@ namespace Smartflow
         public static WorkflowDecision ConvertToReallyType(ASTNode node)
         {
             WorkflowDecision wfNode = new WorkflowDecision();
-            wfNode.INSTANCEID = node.INSTANCEID;
+            wfNode.InstanceID = node.InstanceID;
             wfNode.NID = node.NID;
-            wfNode.IDENTIFICATION = node.IDENTIFICATION;
-            wfNode.APPELLATION = node.APPELLATION;
+            wfNode.ID = node.ID;
+            wfNode.Name = node.Name;
             wfNode.NodeType = node.NodeType;
             return wfNode;
         }
@@ -41,12 +41,14 @@ namespace Smartflow
         /// <returns>路线</returns>
         public Transition GetTransition()
         {
-            Command CMD = GetExecuteCmd();
-            IDbConnection connect = DapperFactory.CreateConnection(CMD.PROVIDERNAME, CMD.CONNECTE);
+            Command command = GetExecuteCmd();
+            WorkflowConfig config=WorkflowConfig.GetInstance(command.ID);
+
+            IDbConnection connection = DapperFactory.CreateConnection(config.ProviderName, config.ConnectionString);
             try
             {
                 DataTable resultSet = new DataTable(Guid.NewGuid().ToString());
-                using (IDataReader reader = connect.ExecuteReader(CMD.SCRIPT, new { INSTANCEID = INSTANCEID }))
+                using (IDataReader reader = connection.ExecuteReader(command.Text, new { InstanceID = InstanceID }))
                 {
                     resultSet.Load(reader);
                     reader.Close();
@@ -57,19 +59,18 @@ namespace Smartflow
                 {
                     foreach (Transition transition in transitions)
                     {
-                        if (resultSet.Select(transition.EXPRESSION).Length > 0)
+                        if (resultSet.Select(transition.Expression).Length > 0)
                         {
                             instance = transition;
                             break;
                         }
                     }
                 }
-                Assert.CheckNull(instance, "instance");
                 return instance;
             }
             catch (Exception ex)
             {
-                throw new WorkflowException(ex, INSTANCEID);
+                throw ex;
             }
         }
 
@@ -79,21 +80,8 @@ namespace Smartflow
         /// <returns>SQL命令的对象</returns>
         protected Command GetExecuteCmd()
         {
-            string query = "SELECT * FROM T_COMMAND WHERE RNID=@RNID";
-            return Connection.Query<Command>(query, new { RNID = NID })
-                  .FirstOrDefault();
+            string query = "SELECT * FROM T_COMMAND WHERE RelationshipID=@RelationshipID";
+            return Connection.Query<Command>(query, new { RelationshipID = NID }).FirstOrDefault();
         }
-
-        public static DataTable GetSettings()
-        {
-            string query = " SELECT * FROM T_CONFIG ";
-            DataTable configData = new DataTable(Guid.NewGuid().ToString());
-            using (IDataReader dr = DapperFactory.CreateWorkflowConnection().ExecuteReader(query))
-            {
-                configData.Load(dr);
-            }
-            return configData;
-        }
-
     }
 }

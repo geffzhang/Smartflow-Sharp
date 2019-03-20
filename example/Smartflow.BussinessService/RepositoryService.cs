@@ -40,7 +40,7 @@ namespace Smartflow.BussinessService
 
         public void Delete(Expression<Func<T, bool>> expression)
         {
-            Connection.Delete<T>(ExpressionUtils.ParseToWhere<T>(expression.Body));
+            Connection.Delete<T>(ExpressionUtils.ParseToWhere(expression.Body));
         }
 
         public T Get(long id)
@@ -50,7 +50,7 @@ namespace Smartflow.BussinessService
 
         public T Get(Expression<Func<T, bool>> expression)
         {
-            return Connection.GetAll<T>(ExpressionUtils.ParseToWhere<T>(expression.Body))
+            return Connection.GetAll<T>(ExpressionUtils.ParseToWhere(expression.Body))
                 .FirstOrDefault();
         }
 
@@ -61,7 +61,7 @@ namespace Smartflow.BussinessService
 
         public List<T> Query(Expression<Func<T, bool>> expression)
         {
-            return Connection.GetAll<T>(ExpressionUtils.ParseToWhere<T>(expression.Body));
+            return Connection.GetAll<T>(ExpressionUtils.ParseToWhere(expression.Body));
         }
     }
 }

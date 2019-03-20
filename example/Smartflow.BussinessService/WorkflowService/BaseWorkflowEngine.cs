@@ -29,7 +29,7 @@ namespace Smartflow.BussinessService.WorkflowService
         protected override bool CheckAuthorization(WorkflowContext context)
         {
             WorkflowInstance instance = context.Instance;
-            if (instance.Current.NodeType == WorkflowNodeCategeory.Decision)
+            if (instance.Current.NodeType == WorkflowNodeCategory.Decision)
             {
                 return true;
             }

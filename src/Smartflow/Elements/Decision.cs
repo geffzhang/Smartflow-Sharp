@@ -22,9 +22,9 @@ namespace Smartflow.Elements
     public class Decision : Node
     {
         [JsonProperty("category", ItemConverterType = typeof(StringEnumConverter))]
-        public override WorkflowNodeCategeory NodeType
+        public override WorkflowNodeCategory NodeType
         {
-            get { return WorkflowNodeCategeory.Decision; }
+            get { return WorkflowNodeCategory.Decision; }
         }
 
         [JsonProperty("command")]
@@ -42,8 +42,8 @@ namespace Smartflow.Elements
 
             if (Command != null)
             {
-                Command.INSTANCEID = INSTANCEID;
-                Command.RNID = NID;
+                Command.InstanceID = InstanceID;
+                Command.RelationshipID = NID;
                 Command.Persistent();
             }
         }

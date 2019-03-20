@@ -40,7 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DynamicRepository.cs" />
     <Compile Include="ExpressionUtils.cs" />
+    <Compile Include="FieldInfo.cs" />
     <Compile Include="IMdl.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="Models\Pending.cs" />
@@ -48,6 +50,7 @@
     <Compile Include="Services\FileApplyService.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Services\PendingService.cs" />
+    <Compile Include="WorkflowService\ActorService.cs" />
     <Compile Include="WorkflowService\BaseWorkflowService.cs" />
     <Compile Include="Models\FileApply.cs" />
     <Compile Include="Models\Record.cs" />
@@ -56,6 +59,8 @@
     <Compile Include="Services\RecordService.cs" />
     <Compile Include="WorkflowService\BaseWorkflowEngine.cs" />
     <Compile Include="Services\UserService.cs" />
+    <Compile Include="WorkflowService\WorkflowDesignService.cs" />
+    <Compile Include="WorkflowService\WorkflowStructure.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Smartflow\Smartflow.csproj">

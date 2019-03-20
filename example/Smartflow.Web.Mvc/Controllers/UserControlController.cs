@@ -45,7 +45,7 @@ namespace Smartflow.Web.Controllers
             List<string> gList = new List<string>();
             foreach (Group g in groupList)
             {
-                gList.Add(g.IDENTIFICATION.ToString());
+                gList.Add(g.ID.ToString());
             }
             List<User> userList = new UserService().GetUserList(string.Join(",", gList));
 

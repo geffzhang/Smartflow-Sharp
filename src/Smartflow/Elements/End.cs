@@ -20,7 +20,7 @@ namespace Smartflow.Elements
     {
         [JsonProperty("name")]
         [XmlIgnore]
-        public override string APPELLATION
+        public override string Name
         {
             get { return "结束"; }
         }
@@ -33,9 +33,9 @@ namespace Smartflow.Elements
         }
 
         [JsonProperty("category", ItemConverterType = typeof(StringEnumConverter))]
-        public override WorkflowNodeCategeory NodeType
+        public override WorkflowNodeCategory NodeType
         {
-            get { return WorkflowNodeCategeory.End; }
+            get { return WorkflowNodeCategory.End; }
         }
     }
 }

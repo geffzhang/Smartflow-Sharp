@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{FF382A38-0F89-443D-B5A9-18E5EE2DA278}"
 EndProject
@@ -12,8 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smartflow", "src\Smartflow\Smartflow.csproj", "{C77DD279-74F0-4A0A-B534-2CF858EDE21D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smartflow.BussinessService", "example\Smartflow.BussinessService\Smartflow.BussinessService.csproj", "{EB6E0EC6-45DB-4EC2-9539-1ACE0981494D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Smartflow.Web.Design", "src\Smartflow.Web.Design\Smartflow.Web.Design.csproj", "{4AEF880E-FFCF-491C-8B3A-B2347612C159}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dapper", "example\Dapper\Dapper.csproj", "{97983236-A85F-4DA6-8518-5E9A788E08E8}"
 EndProject
@@ -35,10 +33,6 @@ Global
 		{EB6E0EC6-45DB-4EC2-9539-1ACE0981494D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB6E0EC6-45DB-4EC2-9539-1ACE0981494D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB6E0EC6-45DB-4EC2-9539-1ACE0981494D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4AEF880E-FFCF-491C-8B3A-B2347612C159}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4AEF880E-FFCF-491C-8B3A-B2347612C159}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4AEF880E-FFCF-491C-8B3A-B2347612C159}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4AEF880E-FFCF-491C-8B3A-B2347612C159}.Release|Any CPU.Build.0 = Release|Any CPU
 		{97983236-A85F-4DA6-8518-5E9A788E08E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{97983236-A85F-4DA6-8518-5E9A788E08E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97983236-A85F-4DA6-8518-5E9A788E08E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -51,7 +45,9 @@ Global
 		{4D2EACD3-4129-40D4-9534-8EF3505FDA97} = {F9CC66D6-9A89-4F48-943F-7040203E9EB1}
 		{C77DD279-74F0-4A0A-B534-2CF858EDE21D} = {FF382A38-0F89-443D-B5A9-18E5EE2DA278}
 		{EB6E0EC6-45DB-4EC2-9539-1ACE0981494D} = {F9CC66D6-9A89-4F48-943F-7040203E9EB1}
-		{4AEF880E-FFCF-491C-8B3A-B2347612C159} = {FF382A38-0F89-443D-B5A9-18E5EE2DA278}
 		{97983236-A85F-4DA6-8518-5E9A788E08E8} = {F9CC66D6-9A89-4F48-943F-7040203E9EB1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FB2067CD-AB97-43A3-938D-548677EECDD2}
 	EndGlobalSection
 EndGlobal

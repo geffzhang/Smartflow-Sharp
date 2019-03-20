@@ -19,9 +19,20 @@ namespace Smartflow.Elements
 {
     public class ASTNode : Element
     {
+        [JsonProperty("name")]
+        [XmlAttribute("name")]
+        public virtual string Name
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// 节点标识ID
+        /// </summary>
         [JsonProperty("unique")]
-        [XmlAttribute("identification")]
-        public override string IDENTIFICATION
+        [XmlAttribute("id")]
+        public  string ID
         {
             get;
             set;
@@ -36,7 +47,7 @@ namespace Smartflow.Elements
         }
 
         [XmlIgnore]
-        public virtual WorkflowNodeCategeory NodeType
+        public virtual WorkflowNodeCategory NodeType
         {
             get;
             set;
@@ -45,23 +56,21 @@ namespace Smartflow.Elements
         internal override void Persistent()
         {
             NID = Guid.NewGuid().ToString();
-            string sql = "INSERT INTO T_NODE(NID,IDENTIFICATION,APPELLATION,NODETYPE,INSTANCEID) VALUES(@NID,@IDENTIFICATION,@APPELLATION,@NODETYPE,@INSTANCEID)";
+            string sql = "INSERT INTO T_NODE(NID,ID,Name,NodeType,InstanceID) VALUES(@NID,@ID,@Name,@NodeType,@InstanceID)";
             Connection.ExecuteScalar<long>(sql, new
             {
                 NID = NID,
-                IDENTIFICATION = IDENTIFICATION,
-                APPELLATION = APPELLATION,
-                NODETYPE = NodeType.ToString(),
-                INSTANCEID = INSTANCEID
+                ID = ID,
+                Name = Name,
+                NodeType = NodeType.ToString(),
+                InstanceID = InstanceID
             });
         }
 
-        internal virtual List<Transition> QueryWorkflowNode(string NID)
+        internal virtual List<Transition> QueryWorkflowNode(string relationshipID)
         {
-            string query = "SELECT * FROM T_TRANSITION WHERE RNID=@RNID";
-            LogService.Info(string.Format("执行QueryWorkflowNode,查询实例RNID：{0} Query:{1}", NID, query));
-            return Connection.Query<Transition>(query, new { RNID = NID })
-                  .ToList();
+            string query = "SELECT * FROM T_TRANSITION WHERE RelationshipID=@RelationshipID";
+            return Connection.Query<Transition>(query, new { RelationshipID = relationshipID }).ToList();
         }
 
         /// <summary>
@@ -72,14 +81,14 @@ namespace Smartflow.Elements
         /// <param name="action"></param>
         internal virtual void SetActor(string actorID, string actorName, WorkflowAction action)
         {
-            if (this.NodeType != WorkflowNodeCategeory.Decision)
+            if (this.NodeType != WorkflowNodeCategory.Decision)
             {
                 Actor actor = new Actor();
-                actor.IDENTIFICATION = actorID;
-                actor.APPELLATION = actorName;
-                actor.RNID = NID;
-                actor.OPERATION = action;
-                actor.INSTANCEID = INSTANCEID;
+                actor.ID= actorID;
+                actor.Name= actorName;
+                actor.RelationshipID = NID;
+                actor.Operation = action;
+                actor.InstanceID = InstanceID;
                 actor.Persistent();
             }
         }

@@ -16,8 +16,6 @@ namespace Smartflow
 {
     public class MailService : IMailService
     {
-        private ILogging logging = WorkflowServiceProvider.OfType<ILogging>();
-
         private static Lazy<MailConfiguration> mailConfigurationLazy = new
             Lazy<MailConfiguration>(() => (ConfigurationManager.GetSection("mailConfiguration") as MailConfiguration));
 
@@ -49,14 +47,7 @@ namespace Smartflow
                 mailConfiguration.Name, to, "待办通知", body);
             foreach (var message in msgList)
             {
-                try
-                {
-                    smtpClientLazy.Value.Send(message);
-                }
-                catch (Exception ex)
-                {
-                    logging.Error(ex.ToString());
-                }
+                smtpClientLazy.Value.Send(message);
             }
         }
 

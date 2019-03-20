@@ -13,12 +13,12 @@ using System.Data;
 
 namespace Smartflow
 {
-    public class WorkflowProcess :Infrastructure,IPersistent, IRelationShip
+    public class WorkflowProcess :WorkflowInfrastructure,IPersistent, IRelationship
     {
         /// <summary>
         /// 外键
         /// </summary>
-        public string RNID
+        public string RelationshipID
         {
             get;
             set;
@@ -36,7 +36,7 @@ namespace Smartflow
         /// <summary>
         /// 当前节点
         /// </summary>
-        public string ORIGIN
+        public string Origin
         {
             get;
             set;
@@ -45,7 +45,7 @@ namespace Smartflow
         /// <summary>
         /// 跳转到的节点
         /// </summary>
-        public string DESTINATION
+        public string Destination
         {
             get;
             set;
@@ -54,7 +54,7 @@ namespace Smartflow
         /// <summary>
         /// 路线ID
         /// </summary>
-        public string TRANSITIONID
+        public string TransitionID
         {
             get;
             set;
@@ -63,7 +63,7 @@ namespace Smartflow
         /// <summary>
         /// 实例ID
         /// </summary>
-        public string INSTANCEID
+        public string InstanceID
         {
             get;
             set;
@@ -72,7 +72,7 @@ namespace Smartflow
         /// <summary>
         /// 节点类型
         /// </summary>
-        public WorkflowNodeCategeory NODETYPE
+        public WorkflowNodeCategory NodeType
         {
             get;
             set;
@@ -81,7 +81,7 @@ namespace Smartflow
         /// <summary>
         /// 创建日期
         /// </summary>
-        public DateTime CREATEDATETIME
+        public DateTime CreateDateTime
         {
             get;
             set;
@@ -90,7 +90,7 @@ namespace Smartflow
         /// <summary>
         /// 退回、撤销、跳转
         /// </summary>
-        public WorkflowAction OPERATION
+        public WorkflowAction Operation
         {
             get;
             set;
@@ -101,17 +101,17 @@ namespace Smartflow
         /// </summary>
         public void Persistent()
         {
-            string sql = "INSERT INTO T_PROCESS(NID,ORIGIN,DESTINATION,TRANSITIONID,INSTANCEID,NODETYPE,RNID,OPERATION) VALUES(@NID,@ORIGIN,@DESTINATION,@TRANSITIONID,@INSTANCEID,@NODETYPE,@RNID,@OPERATION)";
+            string sql = "INSERT INTO T_PROCESS(NID,Origin,Destination,TransitionID,InstanceID,NodeType,RelationshipID,Operation) VALUES(@NID,@Origin,@Destination,@TransitionID,@InstanceID,@NodeType,@RelationshipID,@Operation)";
             Connection.Execute(sql, new
             {
                 NID = Guid.NewGuid().ToString(),
-                ORIGIN = ORIGIN,
-                DESTINATION = DESTINATION,
-                TRANSITIONID = TRANSITIONID,
-                INSTANCEID = INSTANCEID,
-                NODETYPE = NODETYPE.ToString(),
-                RNID = RNID,
-                OPERATION = OPERATION
+                Origin = Origin,
+                Destination = Destination,
+                TransitionID = TransitionID,
+                InstanceID = InstanceID,
+                NodeType = NodeType.ToString(),
+                RelationshipID = RelationshipID,
+                Operation = Operation
             });
         }
 
@@ -121,11 +121,11 @@ namespace Smartflow
             string query = ResourceManage.GetString(ResourceManage.SQL_WORKFLOW_PROCESS);
             instance = instance.Connection.Query<WorkflowProcess>(query, new
             {
-                INSTANCEID = instanceID,
+                InstanceID = instanceID,
                 NID = NID,
-                OPERATION = WorkflowAction.Jump
+                Operation = WorkflowAction.Jump
 
-            }).OrderByDescending(order => order.CREATEDATETIME).FirstOrDefault();
+            }).OrderByDescending(order => order.CreateDateTime).FirstOrDefault();
 
             return instance;
         }

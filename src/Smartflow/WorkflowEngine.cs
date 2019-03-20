@@ -32,7 +32,7 @@ namespace Smartflow
         {
             Processing(executeContext);
             OnProcess(executeContext);
-            if (OnCompleted != null && executeContext.To.NodeType == WorkflowNodeCategeory.End)
+            if (OnCompleted != null && executeContext.To.NodeType == WorkflowNodeCategory.End)
             {
                 OnCompleted(executeContext);
             }
@@ -46,16 +46,15 @@ namespace Smartflow
         /// <returns>true：授权 false：未授权</returns>
         protected abstract bool CheckAuthorization(WorkflowContext context);
 
+
         /// <summary>
-        /// 启动工作流
+        /// 预备启动工作流
         /// </summary>
-        /// <param name="workflowStructure">文件</param>
-        /// <returns>返回实例ID</returns>
-        public string Start(string identification)
+        /// <param name="resourceXml"></param>
+        /// <returns></returns>
+        public Smartflow.Elements.Form Ready(string resourceXml)
         {
-            IWorkflowDesignService service = WorkflowServiceProvider.OfType<IWorkflowDesignService>();
-            WorkflowStructure workflowStructure = service.GetWorkflowStructure(identification);
-            return workflowService.Start(workflowStructure);
+            return workflowService.Ready(resourceXml);
         }
 
         /// <summary>
@@ -63,9 +62,9 @@ namespace Smartflow
         /// </summary>
         /// <param name="resourceXml"></param>
         /// <returns></returns>
-        public string StartWorkflow(string resourceXml)
+        public string Start(string resourceXml)
         {
-            return workflowService.StartWorkflow(resourceXml);
+            return workflowService.Start(resourceXml);
         }
 
         /// <summary>
@@ -111,7 +110,7 @@ namespace Smartflow
                 if (CheckAuthorization(context) == false) return;
 
                 string transitionTo = current.Transitions
-                                  .FirstOrDefault(e => e.NID == context.TransitionID).DESTINATION;
+                                  .FirstOrDefault(e => e.NID == context.TransitionID).Destination;
 
                 current.SetActor(context.ActorID, context.ActorName, WorkflowAction.Jump);
                 instance.Jump(transitionTo);
@@ -129,12 +128,12 @@ namespace Smartflow
                     ActorName = context.ActorName
                 });
 
-                if (to.NodeType == WorkflowNodeCategeory.End)
+                if (to.NodeType == WorkflowNodeCategory.End)
                 {
                     instance.State = WorkflowInstanceState.End;
                     instance.Transfer();
                 }
-                else if (to.NodeType == WorkflowNodeCategeory.Decision)
+                else if (to.NodeType == WorkflowNodeCategory.Decision)
                 {
                     WorkflowDecision wfDecision = WorkflowDecision.ConvertToReallyType(to);
                     Transition transition = wfDecision.GetTransition();
@@ -167,9 +166,9 @@ namespace Smartflow
                 //记录已经参与审批过的人信息
                 current.SetActor(context.ActorID, context.ActorName, WorkflowAction.Undo);
 
-                instance.Jump(current.IDENTIFICATION);
+                instance.Jump(current.ID);
 
-                ASTNode to = current.GetNode(current.IDENTIFICATION);
+                ASTNode to = current.GetNode(current.ID);
 
                 OnExecuteProcess(new ExecutingContext()
                 {
@@ -183,7 +182,7 @@ namespace Smartflow
                     ActorName = context.ActorName
                 });
 
-                if (to.NodeType == WorkflowNodeCategeory.Decision)
+                if (to.NodeType == WorkflowNodeCategory.Decision)
                 {
                     WorkflowNode wfDecision = WorkflowNode.ConvertToReallyType(to);
                     Transition transition = wfDecision.FromTransition;
@@ -201,7 +200,7 @@ namespace Smartflow
         }
 
         /// <summary>
-        /// 流程回退、
+        /// 流程回退
         /// </summary>
         /// <param name="context"></param>
         public void Rollback(WorkflowContext context)
@@ -216,9 +215,9 @@ namespace Smartflow
                 //记录已经参与审批过的人信息
                 current.SetActor(context.ActorID, context.ActorName, WorkflowAction.Rollback);
 
-                instance.Jump(current.IDENTIFICATION);
+                instance.Jump(current.ID);
 
-                ASTNode to = current.GetNode(current.IDENTIFICATION);
+                ASTNode to = current.GetNode(current.ID);
 
                 OnExecuteProcess(new ExecutingContext()
                 {
@@ -232,7 +231,7 @@ namespace Smartflow
                     ActorName = context.ActorName
                 });
 
-                if (to.NodeType == WorkflowNodeCategeory.Decision)
+                if (to.NodeType == WorkflowNodeCategory.Decision)
                 {
                     WorkflowNode wfDecision = WorkflowNode.ConvertToReallyType(to);
                     Transition transition = wfDecision.FromTransition;
@@ -257,13 +256,13 @@ namespace Smartflow
         {
             workflowService.Processing(new WorkflowProcess()
             {
-                RNID = executeContext.To.NID,
-                ORIGIN = executeContext.From.IDENTIFICATION,
-                DESTINATION = executeContext.To.IDENTIFICATION,
-                TRANSITIONID = executeContext.TransitionID,
-                INSTANCEID = executeContext.Instance.InstanceID,
-                NODETYPE = executeContext.From.NodeType,
-                OPERATION = executeContext.Operation
+                RelationshipID = executeContext.To.NID,
+                Origin = executeContext.From.ID,
+                Destination = executeContext.To.ID,
+                TransitionID = executeContext.TransitionID,
+                InstanceID = executeContext.Instance.InstanceID,
+                NodeType = executeContext.From.NodeType,
+                Operation = executeContext.Operation
             });
         }
     }

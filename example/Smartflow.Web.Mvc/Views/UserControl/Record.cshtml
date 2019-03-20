@@ -5,7 +5,7 @@
         <table class="layui-table">
             <tr>
                 <td colspan="2" style="text-align:right;border-top:solid 1px #eee;border-right:solid 1px #eee;">
-                    <a href="#" onclick="openWinWorkflowImage('../../../Smartflow.Web.Design/WorkflowDesign/WorkflowImage?instanceID=@(ViewBag.InstanceID)')">查看流程图</a>
+                    <a href="#" onclick="openWinWorkflowImage('@Url.Action("WorkflowImage","WorkflowDesign",new { instanceID=ViewBag.InstanceID})')">查看流程图</a>
                 </td>
             </tr>
             @foreach (Smartflow.BussinessService.Models.Record rec in Model)

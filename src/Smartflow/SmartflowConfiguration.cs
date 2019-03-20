@@ -19,15 +19,14 @@ namespace Smartflow
         /// <summary>
         /// 工作流数据库连接字符串
         /// </summary>
-        [ConfigurationProperty("connectionString",
-            IsRequired = true)]
+        [ConfigurationProperty("connectionString",IsRequired = true)]
         public string ConnectionString
         {
             get { return this["connectionString"].ToString(); }
         }
 
         /// <summary>
-        ///
+        /// 数据访问提供者
         /// </summary>
         [ConfigurationProperty("providerName",
             IsRequired = true,

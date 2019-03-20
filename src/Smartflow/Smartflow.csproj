@@ -30,7 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -42,32 +42,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assert.cs" />
     <Compile Include="DapperFactory.cs" />
-    <Compile Include="DelegatingCompletedHandle.cs" />
-    <Compile Include="DelegatingProcessHandle.cs" />
+    <Compile Include="DelegatingHandle.cs" />
     <Compile Include="Elements\ASTNode.cs" />
     <Compile Include="Elements\Command.cs" />
     <Compile Include="Elements\Decision.cs" />
     <Compile Include="Elements\Element.cs" />
+    <Compile Include="Elements\ElementAttribute.cs" />
     <Compile Include="Elements\End.cs" />
+    <Compile Include="Elements\Form.cs" />
     <Compile Include="EnumConverter.cs" />
     <Compile Include="Enums\WorkflowAction.cs" />
-    <Compile Include="ILogging.cs" />
+    <Compile Include="Form\DynamicObjectExtensions.cs" />
+    <Compile Include="Form\Relation.cs" />
+    <Compile Include="IFilter.cs" />
     <Compile Include="IMailService.cs" />
-    <Compile Include="IRelationShip.cs" />
+    <Compile Include="IRelationship.cs" />
     <Compile Include="Elements\Node.cs" />
     <Compile Include="Elements\Group.cs" />
     <Compile Include="Elements\Start.cs" />
     <Compile Include="Elements\Transition.cs" />
     <Compile Include="Elements\Workflow.cs" />
     <Compile Include="Enums\WorkflowInstanceState.cs" />
-    <Compile Include="Enums\WorkflowNodeCategeory.cs" />
+    <Compile Include="Enums\WorkflowNodeCategory.cs" />
     <Compile Include="ExecutingContext.cs" />
     <Compile Include="ITransition.cs" />
     <Compile Include="IPersistent.cs" />
     <Compile Include="IWorkflow.cs" />
-    <Compile Include="IWorkflowDesignService.cs" />
     <Compile Include="MailConfiguration.cs" />
     <Compile Include="MailService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,24 +76,25 @@
     <Compile Include="SmartflowConfiguration.cs" />
     <Compile Include="Elements\Actor.cs" />
     <Compile Include="SqlMapper.cs" />
+    <Compile Include="DefaultWordFilter.cs" />
+    <Compile Include="TypeCreator.cs" />
+    <Compile Include="WorkflowConfig.cs" />
     <Compile Include="WorkflowContext.cs" />
     <Compile Include="WorkflowDecision.cs" />
-    <Compile Include="WorkflowDesignService.cs" />
     <Compile Include="WorkflowEngine.cs" />
-    <Compile Include="WorkflowException.cs" />
-    <Compile Include="Infrastructure.cs" />
-    <Compile Include="WorkflowLogging.cs" />
+    <Compile Include="WorkflowInfrastructure.cs" />
     <Compile Include="WorkflowServiceProvider.cs" />
     <Compile Include="WorkflowInstance.cs" />
     <Compile Include="WorkflowNode.cs" />
     <Compile Include="WorkflowProcess.cs" />
     <Compile Include="WorkflowService.cs" />
     <Compile Include="WorkflowService.Process.cs" />
-    <Compile Include="WorkflowStructure.cs" />
     <Compile Include="XmlConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="SmartflowResource.resx" />
+    <EmbeddedResource Include="SmartflowResource.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

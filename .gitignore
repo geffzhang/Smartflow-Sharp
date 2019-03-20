@@ -19,3 +19,16 @@ example/Smartflow.Web.Form/bin/Smartflow.Web.Form.dll.config
 *.txt
 *.xml
 example/Dapper/obj/Debug/CSC11C2ACC7F7A94F9ABE131CB7D87741.TMP
+UpgradeLog.htm
+UpgradeLog2.htm
+*.lock
+*.ide
+*.ide-shm
+*.ide-wal
+.vs/Smartflow/v15/.suo
+example/Smartflow.BussinessService/obj/Debug/Smartflow.BussinessService.csproj.CopyComplete
+example/Smartflow.Web.Mvc/obj/Debug/Smartflow.Web.Mvc.csproj.CopyComplete
+
+
+bin
+obj

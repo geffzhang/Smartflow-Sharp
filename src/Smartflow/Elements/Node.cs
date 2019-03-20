@@ -20,12 +20,13 @@ namespace Smartflow.Elements
 {
     [XmlInclude(typeof(List<Transition>))]
     [XmlInclude(typeof(List<Group>))]
+    [XmlInclude(typeof(Form))]
     public class Node : ASTNode
     {
-        private WorkflowNodeCategeory _nodeType = WorkflowNodeCategeory.Normal;
+        private WorkflowNodeCategory _nodeType = WorkflowNodeCategory.Normal;
 
         [JsonProperty("category", ItemConverterType = typeof(EnumConverter))]
-        public override WorkflowNodeCategeory NodeType
+        public override WorkflowNodeCategory NodeType
         {
             get { return _nodeType; }
             set { _nodeType = value; }
@@ -47,6 +48,15 @@ namespace Smartflow.Elements
             set;
         }
 
+
+        [JsonProperty("form")]
+        [XmlElement(ElementName = "form")]
+        public virtual Form WebView
+        {
+            get;
+            set;
+        }
+
         internal override void Persistent()
         {
             base.Persistent();
@@ -55,9 +65,9 @@ namespace Smartflow.Elements
             {
                 foreach (Transition transition in Transitions)
                 {
-                    transition.RNID = this.NID;
-                    transition.ORIGIN = this.IDENTIFICATION;
-                    transition.INSTANCEID = INSTANCEID;
+                    transition.RelationshipID = this.NID;
+                    transition.Origin = this.ID;
+                    transition.InstanceID = InstanceID;
                     transition.Persistent();
                 }
             }
@@ -66,24 +76,28 @@ namespace Smartflow.Elements
             {
                 foreach (Group r in Groups)
                 {
-                    r.RNID = this.NID;
-                    r.INSTANCEID = INSTANCEID;
+                    r.RelationshipID = this.NID;
+                    r.InstanceID = InstanceID;
                     r.Persistent();
                 }
             }
+
+            if (WebView != null)
+            {
+                WebView.RelationshipID = this.NID;
+                WebView.InstanceID = InstanceID;
+                WebView.Persistent();
+            }
         }
 
-        public ASTNode GetNode(string IDENTIFICATION)
+        public ASTNode GetNode(string ID)
         {
-            string query = "SELECT * FROM T_NODE WHERE IDENTIFICATION=@IDENTIFICATION AND INSTANCEID=@INSTANCEID";
-            ASTNode node = Connection.Query<ASTNode>(query, new
+            string query = "SELECT * FROM T_NODE WHERE ID=@ID AND InstanceID=@InstanceID";
+            return Connection.Query<ASTNode>(query, new
             {
-                IDENTIFICATION = IDENTIFICATION,
-                INSTANCEID = INSTANCEID
-
+                ID = ID,
+                InstanceID = InstanceID
             }).FirstOrDefault();
-
-            return node;
         }
     }
 }

@@ -16,49 +16,35 @@ using Newtonsoft.Json;
 
 namespace Smartflow.Elements
 {
-    public class Command : Element, IRelationShip
+    public class Command : Element, IRelationship
     {
+
+        /// <summary>
+        /// 数据源ID
+        /// </summary>
+        [JsonProperty("id")]
+        [XmlElement("id")]
+        public string ID
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         /// 执行SQL语句
         /// </summary>
-        [JsonProperty("script")]
-        [XmlElement("script")]
-        public string SCRIPT
+        [JsonProperty("text")]
+        [XmlElement("text")]
+        public string Text
         {
             get;
             set;
         }
 
-        /// <summary>
-        /// 连接字符串
-        /// </summary>
-        [JsonProperty("connecte")]
-        [XmlElement("connecte")]
-        public string CONNECTE
-        {
-            get;
-            set;
-        }
-
-        [JsonProperty("providername")]
-        [XmlElement("providername")]
-        public string PROVIDERNAME
-        {
-            get;
-            set;
-        }
-
-        [JsonProperty("commandtype")]
-        [XmlElement("commandtype")]
-        public string COMMANDTYPE
-        {
-            get;
-            set;
-        }
 
         [JsonIgnore]
         [XmlIgnore]
-        public string RNID
+        public string RelationshipID
         {
             get;
             set;
@@ -66,17 +52,14 @@ namespace Smartflow.Elements
 
         internal override void Persistent()
         {
-            string sql = "INSERT INTO T_COMMAND(NID,RNID,APPELLATION,SCRIPT,CONNECTE,INSTANCEID,PROVIDERNAME,COMMANDTYPE) VALUES(@NID,@RNID,@APPELLATION,@SCRIPT,@CONNECTE,@INSTANCEID,@PROVIDERNAME,@COMMANDTYPE)";
+            string sql = "INSERT INTO T_Command(NID,ID,RelationshipID,Text,InstanceID) VALUES(@NID,@ID,@RelationshipID,@Text,@InstanceID)";
             Connection.Execute(sql, new
             {
                 NID = Guid.NewGuid().ToString(),
-                RNID = RNID,
-                APPELLATION = APPELLATION,
-                SCRIPT = SCRIPT,
-                CONNECTE = CONNECTE,
-                INSTANCEID = INSTANCEID,
-                PROVIDERNAME = PROVIDERNAME,
-                COMMANDTYPE = COMMANDTYPE
+                ID=ID,
+                RelationshipID = RelationshipID,
+                Text = Text,
+                InstanceID = InstanceID
             });
         }
     }

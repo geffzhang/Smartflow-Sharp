@@ -20,17 +20,17 @@ namespace Smartflow.Elements
     {
         [JsonProperty("name")]
         [XmlIgnore]
-        public override string APPELLATION
+        public override string Name
         {
             get { return "开始"; }
         }
 
         [JsonProperty("category", ItemConverterType = typeof(StringEnumConverter))]
-        public override WorkflowNodeCategeory NodeType
+        public override WorkflowNodeCategory NodeType
         {
             get
             {
-                return WorkflowNodeCategeory.Start;
+                return WorkflowNodeCategory.Start;
             }
         }
     }

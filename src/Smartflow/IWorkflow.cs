@@ -17,19 +17,21 @@ namespace Smartflow
     /// </summary>
     public interface IWorkflow
     {
+
         /// <summary>
         /// 启动工作流
         /// </summary>
-        /// <param name="workflowStructure"></param>
+        /// <param name="resourceXml">流程结构</param>
         /// <returns></returns>
-        string Start(WorkflowStructure workflowStructure);
+        Smartflow.Elements.Form Ready(string resourceXml);
+
 
         /// <summary>
-        /// 部署工作流
+        /// 启动工作流
         /// </summary>
         /// <param name="resourceXml">流程结构</param>
         /// <returns></returns>
-        string StartWorkflow(string resourceXml);
+        string Start(string resourceXml);
 
         /// <summary>
         /// 终结流程

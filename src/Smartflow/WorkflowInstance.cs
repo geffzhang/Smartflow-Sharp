@@ -14,7 +14,7 @@ using Smartflow.Enums;
 
 namespace Smartflow
 {
-    public class WorkflowInstance : Infrastructure
+    public class WorkflowInstance : WorkflowInfrastructure
     {
         protected WorkflowInstance()
         {
@@ -38,13 +38,8 @@ namespace Smartflow
             set;
         }
 
-        public string STRUCTUREID
-        {
-            get;
-            set;
-        }
 
-        public string STRUCTUREXML
+        public string Resource
         {
             get;
             set;
@@ -67,13 +62,13 @@ namespace Smartflow
                     instance.Current = WorkflowNode.ConvertToReallyType(node);
                     return instance;
 
-                }, param: new { INSTANCEID = instanceID }, splitOn: "APPELLATION").FirstOrDefault<WorkflowInstance>();
+                }, param: new { INSTANCEID = instanceID }, splitOn: "Name").FirstOrDefault<WorkflowInstance>();
 
                 return workflowInstance;
             }
             catch (Exception ex)
             {
-                throw new WorkflowException(ex, instanceID);
+                throw ex;
             }
         }
 
@@ -83,11 +78,11 @@ namespace Smartflow
         /// <param name="transitionTo">选择跳转路线</param>
         internal void Jump(string transitionTo)
         {
-            string update = " UPDATE T_INSTANCE SET RNID=@RNID WHERE INSTANCEID=@INSTANCEID ";
+            string update = " UPDATE T_INSTANCE SET RelationshipID=@RelationshipID WHERE InstanceID=@InstanceID ";
             Connection.Execute(update, new
             {
-                RNID = transitionTo,
-                INSTANCEID = InstanceID
+                RelationshipID = transitionTo,
+                InstanceID = InstanceID
             });
         }
 
@@ -96,31 +91,27 @@ namespace Smartflow
         /// </summary>
         internal void Transfer()
         {
-            string update = " UPDATE T_INSTANCE SET STATE=@STATE WHERE INSTANCEID=@INSTANCEID ";
+            string update = " UPDATE T_INSTANCE SET State=@State WHERE InstanceID=@InstanceID ";
             Connection.Execute(update, new
             {
-                STATE = State.ToString(),
-                INSTANCEID = InstanceID
+                State = State.ToString(),
+                InstanceID = InstanceID
             });
         }
 
-        internal static string CreateWorkflowInstance(string nodeID, string structureID, string structureXml)
+        internal static string CreateWorkflowInstance(string nodeID, string resource)
         {
             WorkflowInstance instance = new WorkflowInstance();
             string instanceID = Guid.NewGuid().ToString();
-            string sql = "INSERT INTO T_INSTANCE(INSTANCEID,RNID,STRUCTUREID,STATE,STRUCTUREXML) VALUES(@INSTANCEID,@RNID,@STRUCTUREID,@STATE,@STRUCTUREXML)";
+            string sql = "INSERT INTO T_INSTANCE(InstanceID,RelationshipID,State,Resource) VALUES(@InstanceID,@RelationshipID,@State,@Resource)";
 
             instance.Connection.Execute(sql, new
             {
-                INSTANCEID = instanceID,
-                RNID = nodeID,
-                STRUCTUREID = structureID,
-                STATE = WorkflowInstanceState.Running.ToString(),
-                STRUCTUREXML = structureXml
+                InstanceID = instanceID,
+                RelationshipID = nodeID,
+                State = WorkflowInstanceState.Running.ToString(),
+                Resource = resource
             });
-
-            instance.LogService.Info(string.Format("执行{0}方法创建实例,实例ID:{1}", "CreateWorkflowInstance", instanceID));
-
             return instanceID;
         }
     }

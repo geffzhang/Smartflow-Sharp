@@ -14,22 +14,14 @@ using Smartflow.Enums;
 using Newtonsoft.Json;
 namespace Smartflow.Elements
 {
-
     /// <summary>
     /// 为兼容其他数据库，对ID、NAME 名称进行调整，与数据库保留关键字进行区分
     /// </summary>
     [Serializable]
-    public abstract class Element : Infrastructure
+    public abstract class Element : WorkflowInfrastructure
     {
-        [XmlAttribute("identification")]
-        public virtual string IDENTIFICATION
-        {
-            get;
-            set;
-        }
-
         /// <summary>
-        /// 节点唯一标识
+        /// 唯一标识
         /// </summary>
         [JsonIgnore]
         [XmlIgnore]
@@ -39,17 +31,10 @@ namespace Smartflow.Elements
             set;
         }
 
-        [JsonProperty("name")]
-        [XmlAttribute("appellation")]
-        public virtual string APPELLATION
-        {
-            get;
-            set;
-        }
 
         [JsonIgnore]
         [XmlIgnore]
-        public virtual string INSTANCEID
+        public virtual string InstanceID
         {
             get;
             set;

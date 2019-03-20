@@ -15,15 +15,15 @@ using System.Xml.Serialization;
 
 namespace Smartflow.Elements
 {
-    public class Actor : Element, IRelationShip
+    public class Actor : ElementAttribute, IRelationship
     {
-        public string RNID
+        public string RelationshipID
         {
             get;
             set;
         }
 
-        public WorkflowAction OPERATION
+        public WorkflowAction Operation
         {
             get;
             set;
@@ -31,15 +31,15 @@ namespace Smartflow.Elements
 
         internal override void Persistent()
         {
-            string sql = "INSERT INTO T_ACTOR(NID,IDENTIFICATION,RNID,APPELLATION,INSTANCEID,OPERATION) VALUES(@NID,@IDENTIFICATION,@RNID,@APPELLATION,@INSTANCEID,@OPERATION)";
+            string sql = "INSERT INTO T_ACTOR(NID,ID,RelationshipID,Name,InstanceID,Operation) VALUES(@NID,@ID,@RelationshipID,@Name,@InstanceID,@Operation)";
             DapperFactory.CreateWorkflowConnection().Execute(sql, new
             {
                 NID = Guid.NewGuid().ToString(),
-                IDENTIFICATION = IDENTIFICATION,
-                RNID = RNID,
-                APPELLATION = APPELLATION,
-                INSTANCEID = INSTANCEID,
-                OPERATION = OPERATION
+                ID = ID,
+                RelationshipID = RelationshipID,
+                Name = Name,
+                InstanceID = InstanceID,
+                Operation = Operation
             });
         }
     }

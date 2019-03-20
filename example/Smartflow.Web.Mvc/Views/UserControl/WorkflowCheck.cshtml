@@ -84,7 +84,7 @@
                     <select id="ddlOperate">
                         @foreach (var item in Model)
                         {
-                            <option to="@item.DESTINATION" value="@item.NID" action="jump">@item.APPELLATION</option>
+                            <option to="@item.Destination" value="@item.NID" action="jump">@item.Name</option>
                         }
                         @if (!ViewBag.CheckResult)
                         {

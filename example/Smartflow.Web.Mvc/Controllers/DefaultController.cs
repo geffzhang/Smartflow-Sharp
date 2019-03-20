@@ -14,7 +14,7 @@ namespace Smartflow.Web.Controllers
 {
     public class DefaultController : BaseController
     {
-        private IWorkflowDesignService workflowStructureService = WorkflowServiceProvider.OfType<IWorkflowDesignService>();
+        private WorkflowDesignService workflowStructureService = new WorkflowDesignService();
         private PendingService pendingService = new PendingService();
 
         public ActionResult Main()

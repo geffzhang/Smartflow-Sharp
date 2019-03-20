@@ -16,34 +16,17 @@ using Smartflow.Enums;
 
 namespace Smartflow
 {
-    public partial class WorkflowService :Infrastructure, IWorkflow
+    public partial class WorkflowService :WorkflowInfrastructure, IWorkflow
     {
-        public string Start(WorkflowStructure workflowStructure)
-        {
-            try
-            {
-                Workflow workflow = XmlConfiguration.ParseflowXml<Workflow>(workflowStructure.STRUCTUREXML);
-                List<Element> elements = new List<Element>();
-                elements.Add(workflow.StartNode);
-                elements.AddRange(workflow.ChildNode);
-                elements.AddRange(workflow.ChildDecisionNode);
-                elements.Add(workflow.EndNode);
 
-                string instaceID = CreateWorkflowInstance(workflow.StartNode.IDENTIFICATION, workflowStructure.IDENTIFICATION, workflowStructure.STRUCTUREXML);
-                foreach (Element element in elements)
-                {
-                    element.INSTANCEID = instaceID;
-                    element.Persistent();
-                }
-                return instaceID;
-            }
-            catch (Exception ex)
-            {
-                throw new WorkflowException(ex);
-            }
+        public Smartflow.Elements.Form Ready(string resourceXml)
+        {
+            Workflow workflow = XmlConfiguration.ParseflowXml<Workflow>(resourceXml);
+            return workflow.StartNode.WebView;
         }
 
-        public string StartWorkflow(string resourceXml)
+
+        public string Start(string resourceXml)
         {
             Workflow workflow = XmlConfiguration.ParseflowXml<Workflow>(resourceXml);
             List<Element> elements = new List<Element>();
@@ -52,14 +35,17 @@ namespace Smartflow
             elements.AddRange(workflow.ChildDecisionNode);
             elements.Add(workflow.EndNode);
 
-            string instaceID = CreateWorkflowInstance(workflow.StartNode.IDENTIFICATION,"0",resourceXml);
+            string instaceID = CreateWorkflowInstance(workflow.StartNode.ID,resourceXml);
             foreach (Element element in elements)
             {
-                element.INSTANCEID = instaceID;
+                element.InstanceID = instaceID;
                 element.Persistent();
             }
             return instaceID;
         }
+
+
+
 
         public void Kill(WorkflowInstance instance)
         {
@@ -88,9 +74,9 @@ namespace Smartflow
             }
         }
 
-        protected string CreateWorkflowInstance(string startNID, string structureID, string structure)
+        protected string CreateWorkflowInstance(string NID, string resource)
         {
-            return WorkflowInstance.CreateWorkflowInstance(startNID, structureID, structure);
+            return WorkflowInstance.CreateWorkflowInstance(NID, resource);
         }
     }
 }

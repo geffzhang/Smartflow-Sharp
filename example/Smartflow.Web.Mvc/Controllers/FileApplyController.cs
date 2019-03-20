@@ -16,7 +16,7 @@ namespace Smartflow.Web.Controllers
     {
         private BaseWorkflowService bwfs = BaseWorkflowService.Instance;
         private FileApplyService fileApplyService = new FileApplyService();
-
+        private WorkflowDesignService designService = new WorkflowDesignService();
         public ActionResult Save(FileApply model)
         {
             model.STATUS = 0;
@@ -61,11 +61,11 @@ namespace Smartflow.Web.Controllers
                     var executeNode = bwfs.GetCurrentPrevNode(mdl.INSTANCEID);
                     var current = bwfs.GetCurrent(mdl.INSTANCEID);
 
-                    ViewBag.ButtonName = current.APPELLATION;
-                    ViewBag.PreviousButtonName = executeNode == null ? String.Empty : executeNode.APPELLATION;
+                    ViewBag.ButtonName = current.Name;
+                    ViewBag.PreviousButtonName = executeNode == null ? String.Empty : executeNode.Name;
                     ViewBag.UndoCheck = CommonMethods.CheckUndoButton(mdl.INSTANCEID);
                     ViewBag.UndoAuth = executeNode == null ? true : CommonMethods.CheckUndoAuth(mdl.INSTANCEID, UserInfo);
-                    ViewBag.JumpAuth = current.APPELLATION == "开始" ? true : CommonMethods.CheckAuth(current.NID, mdl.INSTANCEID, UserInfo);
+                    ViewBag.JumpAuth = current.Name == "开始" ? true : CommonMethods.CheckAuth(current.NID, mdl.INSTANCEID, UserInfo);
                     ViewBag.UserList = new UserService().GetPendingUserList(current.NID, mdl.INSTANCEID);
                 }
                 return View(mdl);
@@ -74,9 +74,7 @@ namespace Smartflow.Web.Controllers
 
         public void GenerateWFViewData(string WFID)
         {
-            List<WorkflowStructure> workflowXmlList = WorkflowServiceProvider
-                .OfType<IWorkflowDesignService>()
-                .GetWorkflowStructureList();
+            List<WorkflowStructure> workflowXmlList = designService.GetWorkflowStructureList();
 
             List<SelectListItem> fileList = new List<SelectListItem>();
             foreach (WorkflowStructure item in workflowXmlList)
